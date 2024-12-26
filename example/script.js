@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Pegando todos os paths de municípios
-    const municipios = document.querySelectorAll("svg #tracados path");
+    // Pega todos os elementos 'path' de municípios
+    mapaControlador.municipios = document.querySelectorAll("svg #tracados path");
 
+    // Pega todos os elementos de nomes de municípios, seja um 'text' ou um 'grupo' de textos
+    mapaControlador.nomes = document.querySelectorAll('svg #nomes > *');
+    
     //Exemplo - define cor diferente para um município no início
-    const vitoria = document.querySelector("svg #tracados path[id='3205309']")
-    vitoria.setAttribute("fill", "lightblue");
+    //const vitoria = document.querySelector("svg #tracados path[id='3205309']")
+    //vitoria.setAttribute("fill", "lightblue");
 
     //Exemplo - esconder todos os nomes de municipio de uma vez via grupo
     //const grupoLabels = document.querySelector('svg #nomes');
@@ -20,61 +23,150 @@ document.addEventListener("DOMContentLoaded", function () {
     //});
 
     //Exemplo - exibir o traçado de apenas um município
-    //const nomes = document.querySelectorAll("svg #tracados > *");
+    //const nomes = document.querySelectorAll("svg #tracados > *"); 
     //nomes.forEach(nome => {
     //    if (nome.id != '3203205') {
     //        nome.style.display = 'none';
     //    }
     //});
 
-    //Ajustes do mapa por município
-    municipios.forEach(municipio => {
+    mapaControlador.configurarEventosDeHover();
 
-        //Mouse over: faz o município aparecer com uma cor de destaque
-        municipio.addEventListener("mouseover", () => {
-
-            const munObj = municipioData.find(m => m.codigoIbge === municipio.id);
-
-                // Exibe o nome no elemento de informação (topo da página de exemplo)
-                document.getElementById("info").textContent = munObj.nome;
-
-                // Armazena a cor original antes de alterar para a cor amarela
-                const originalColor = municipio.getAttribute("fill");
-
-                // Define o atributo fill para a cor amarela
-                municipio.setAttribute("fill", "#FFD700");
-
-                // Armazena a cor original no próprio município, para usá-la depois
-                municipio.setAttribute("data-original-color", originalColor);
-        });
-
-        //Mouse over: faz o município retornar para sua cor original, salva em 'mouseover'
-        municipio.addEventListener("mouseout", () => {
-
-            // Limpa o conteúdo da informação (topo da página de exemplo)
-            document.getElementById("info").textContent = "";
-
-            // Restaura a cor original do path
-            const originalColor = municipio.getAttribute("data-original-color");
-
-            // Volta à cor original que foi armazenada
-            municipio.setAttribute("fill", originalColor);
-        });
-
-        //Click: apenas mostra um alerta contendo o nome e o código IBGE do município
+    //Click: apenas mostra um alerta contendo o nome e o código IBGE do município
+    mapaControlador.municipios.forEach(municipio => {
         municipio.addEventListener("click", () => {
             const munObj = municipioData.find(m => m.codigoIbge === municipio.id);
             alert(`${munObj.codigoIbge} - ${munObj.nome}`);
         });
     });
-
-    //Macete: ajusta labels dos nomes dos municípios para não atrapalhar o mouseover (senão, ao passar o mouse sobre o label, não ativa a cor do município)
-    const labels = document.querySelectorAll('svg #nomes text');
-    labels.forEach(label => {
-        label.style.pointerEvents = 'none';
-    });
-
+    
 });
+
+const mapaControlador = {
+
+    municipios: null,
+    nomes: null,
+
+    configurarEventosDeHover() {
+
+        //Ajustes do mapa por município
+        this.municipios.forEach(municipio => {
+
+            //Mouse over: faz o município aparecer com uma cor de destaque
+            municipio.addEventListener("mouseover", () => {
+
+                // Armazena a cor original antes de alterar para a cor amarela
+                const originalColor = municipio.getAttribute("fill");
+
+                // Define o atributo fill para a cor amarela
+                municipio.setAttribute("fill", "#fff9c4");
+
+                // Armazena a cor original no próprio município, para usá-la depois
+                municipio.setAttribute("data-original-color", originalColor);
+            });
+
+            //Mouse over: faz o município retornar para sua cor original, salva em 'mouseover'
+            municipio.addEventListener("mouseout", () => {
+
+                // Restaura a cor original do path
+                const originalColor = municipio.getAttribute("data-original-color");
+
+                // Volta à cor original que foi armazenada
+                municipio.setAttribute("fill", originalColor);
+            });
+        });
+
+        //Macete: ajusta labels dos nomes dos municípios para não atrapalhar o mouseover (senão, ao passar o mouse sobre o label, não ativa a cor do município)
+        this.nomes.forEach(label => {
+            label.style.pointerEvents = 'none';
+        });
+    },
+
+    //extras para exemplo
+
+    ressaltarGrandeVitoria() {
+
+        const municipiosGV = [
+            '3201308', //cariacica
+            '3202207', //fundao
+            '3202405', //guarapari
+            '3205002', //serra
+            '3205101', //viana
+            '3205200', //vila velha
+            '3205309',  //vitoria
+        ];
+
+        this.municipios.forEach(mun => {
+            if (municipiosGV.includes(mun.id)) {
+                mun.setAttribute("fill", "#bbdefb");
+            }
+        });        
+    },
+
+    esconderNomes() {
+        this.nomes.forEach(nome => { 
+            nome.style.display = 'none';            
+        });
+    },
+
+    exibirApenasLinhares() {
+
+        this.municipios.forEach(mun => {
+            if (mun.id != '3203205') {
+                mun.style.display = 'none';
+            }
+        });
+
+        this.nomes.forEach(nome => {
+            if (nome.id != '3203205') {
+                nome.style.display = 'none';
+            }
+        });
+    },
+};
+
+const zoomControls = {
+
+    scale: 1,
+    mapa: document.querySelector('.map-container svg'),
+
+    zoomIn() {
+        this.scale += 0.2;
+        this.applyZoom();
+    },
+
+    zoomOut() {
+        this.scale -= 0.2;
+        this.applyZoom();
+    },
+
+    zoomReset() {
+        this.scale = 1;
+        this.applyZoom();        
+    },
+
+    applyZoom() {
+        this.mapa.style.transform = `scale(${this.scale})`;
+    }
+}
+
+//controle de zoom
+
+
+//function zoomIn() {
+//    scale += 0.2;
+//    document.querySelector('.map-container svg').style.transform = `scale(${scale})`;
+//}
+//
+//function zoomOut() {
+//    scale -= 0.2;
+//    document.querySelector('.map-container svg').style.transform = `scale(${scale})`;
+//}
+//
+//function zoomReset() {
+//
+//}
+
 
 // Array contendo todos os 78 municípios capixabas, usando o código IBGE como identificador
 const municipioData = [

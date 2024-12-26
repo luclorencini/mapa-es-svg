@@ -1,12 +1,38 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
+    margin: 0;
+    height: 100vh;
+    overflow-y: hidden;
 }
 
-#map-container {    
-    width: 80%;
+h1 {
+    border-bottom: 1px solid gray;
+    margin-bottom: 0;
+    height: 3rem;
+}
+
+.tela-dividida {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100vh - 4rem);
+}
+
+& .map-container {
+    width: 70%;
     margin-left: auto;
     margin-right: auto;
+    overflow-y: scroll;
+    position: relative;
+}
+
+& svg {
+    height: 950px;
+}
+
+& .info-container {
+    width: 25rem;
+    padding: 5px;
 }
 
 #map {
@@ -15,21 +41,48 @@ body {
     background-color: white;
 }
 
-.municipio {
-    cursor: pointer;
-}
-
-.municipio:hover path {
-    fill: #FFD700;  /* Cor de destaque quando o mouse passa por cima */
-}
-
 #info {
     margin-top: 10px;
-	height: 20px;
+    height: 20px;
     font-size: 24px;
     font-weight: bold;
 }
 
-svg #nomes text{
+.zoom-controls {
+    position: fixed;
+    top: 72px;
+    left: 2px;
+}
+
+.button-zoom {
+    padding: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+    background-color: #616161;
+    color: white;
+    border: none;
+}
+
+.button-action {
+    padding: 12px;
+    margin: 3px;
+    width: 90%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+}
+
+& .button-reset {
+    background-color: #d32f2f;
+}
+
+svg #tracados path {
+    cursor: pointer;
+}
+
+svg #nomes text {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
