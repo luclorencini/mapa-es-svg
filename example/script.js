@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const municipios = document.querySelectorAll("svg #tracados path");
 
     //Exemplo - define cor diferente para um município no início
-    //const vitoria = document.querySelector("svg #tracados g[id='3205309']")
-    //vitoria.querySelector("path").setAttribute("fill", "lightblue");
+    const vitoria = document.querySelector("svg #tracados path[id='3205309']")
+    vitoria.setAttribute("fill", "lightblue");
 
     //Exemplo - esconder todos os nomes de municipio de uma vez via grupo
     //const grupoLabels = document.querySelector('svg #nomes');
@@ -15,7 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
     //const nomes = document.querySelectorAll("svg #nomes > *");
     //nomes.forEach(nome => {
     //    if (nome.id != '3203205') {
-    //        nome.style.display = 'none'; 
+    //        nome.style.display = 'none';
+    //    }
+    //});
+
+    //Exemplo - exibir o traçado de apenas um município
+    //const nomes = document.querySelectorAll("svg #tracados > *");
+    //nomes.forEach(nome => {
+    //    if (nome.id != '3203205') {
+    //        nome.style.display = 'none';
     //    }
     //});
 
@@ -27,21 +35,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const munObj = municipioData.find(m => m.codigoIbge === municipio.id);
 
-            if (munObj) {
-
                 // Exibe o nome no elemento de informação (topo da página de exemplo)
                 document.getElementById("info").textContent = munObj.nome;
 
                 // Armazena a cor original antes de alterar para a cor amarela
-                const pathElement = municipio.querySelector("path");
-                const originalColor = pathElement.getAttribute("fill");
+                const originalColor = municipio.getAttribute("fill");
 
                 // Define o atributo fill para a cor amarela
-                pathElement.setAttribute("fill", "#FFD700");
+                municipio.setAttribute("fill", "#FFD700");
 
                 // Armazena a cor original no próprio município, para usá-la depois
                 municipio.setAttribute("data-original-color", originalColor);
-            }
         });
 
         //Mouse over: faz o município retornar para sua cor original, salva em 'mouseover'
@@ -51,11 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("info").textContent = "";
 
             // Restaura a cor original do path
-            const pathElement = municipio.querySelector("path");
             const originalColor = municipio.getAttribute("data-original-color");
 
             // Volta à cor original que foi armazenada
-            pathElement.setAttribute("fill", originalColor);
+            municipio.setAttribute("fill", originalColor);
         });
 
         //Click: apenas mostra um alerta contendo o nome e o código IBGE do município
@@ -66,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     //Macete: ajusta labels dos nomes dos municípios para não atrapalhar o mouseover (senão, ao passar o mouse sobre o label, não ativa a cor do município)
-    const labels = document.querySelectorAll('svg #Nomes text');
+    const labels = document.querySelectorAll('svg #nomes text');
     labels.forEach(label => {
         label.style.pointerEvents = 'none';
     });
@@ -84,8 +87,8 @@ const municipioData = [
     { codigoIbge: '3200409', nome: 'Anchieta' },
     { codigoIbge: '3200508', nome: 'Apiacá' },
     { codigoIbge: '3200607', nome: 'Aracruz' },
-    { codigoIbge: '3200706', nome: 'Atílio Vivácqua' },
-    { codigoIbge: '3200805', nome: 'Baixo Guandu' },
+    { codigoIbge: '3200706', nome: 'Atílio Vivacqua' },
+    { codigoIbge: '3200805', nome: 'Baixo Guandú' },
     { codigoIbge: '3200904', nome: 'Barra de São Francisco' },
     { codigoIbge: '3201001', nome: 'Boa Esperança' },
     { codigoIbge: '3201100', nome: 'Bom Jesus do Norte' },
