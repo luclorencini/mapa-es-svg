@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#map-container {    
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#map {
+    width: 100%;
+    height: auto;
+    background-color: white;
+}
+
+.municipio {
+    cursor: pointer;
+}
+
+.municipio:hover path {
+    fill: #FFD700;  /* Cor de destaque quando o mouse passa por cima */
+}
+
+#info {
+    margin-top: 10px;
+	height: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
