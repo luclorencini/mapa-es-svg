@@ -1,48 +1,82 @@
+
+//funções de exemplo
+
+function destacarGrandeVitoria() {
+
+    const municipiosGV = [
+        '3201308', //cariacica
+        '3202207', //fundao
+        '3202405', //guarapari
+        '3205002', //serra
+        '3205101', //viana
+        '3205200', //vila velha
+        '3205309',  //vitoria
+    ];
+
+    municipiosGV.forEach(cod => {
+        mapaHandler.setCorMunicipio(cod, "#bbdefb");
+    });
+}
+
+function esconderTodosOsNomes() {
+
+    mapaHandler.nomes.forEach(nome => {
+        mapaHandler.esconderNome(nome.id);
+    });
+}
+
+function exibirApenasLinhares() {
+
+    mapaHandler.municipios.forEach(mun => {
+        if (mun.id != '3203205') {
+            mapaHandler.esconderTracado(mun.id);
+        }
+    });
+
+    mapaHandler.nomes.forEach(nome => {
+        if (nome.id != '3203205') {
+            mapaHandler.esconderNome(nome.id);
+        }
+    });
+}
+
+function customizarColatina() {
+
+    mapaHandler.setCorMunicipio('3201506', "#c8e6c9");
+
+    mapaHandler.customizarNome('3201506', '#bf360c');
+}
+
+function customizarCachoeiro() {
+
+    mapaHandler.setCorMunicipio('3201209', "#b39ddb");
+
+    mapaHandler.customizarNome('3201209', '#ffee58', true);
+}
+
+//
+
 document.addEventListener("DOMContentLoaded", function () {
 
     // Pega todos os elementos 'path' de municípios
-    mapaControlador.municipios = document.querySelectorAll("svg #tracados path");
+    mapaHandler.municipios = document.querySelectorAll("svg #tracados path");
 
     // Pega todos os elementos de nomes de municípios, seja um 'text' ou um 'grupo' de textos
-    mapaControlador.nomes = document.querySelectorAll('svg #nomes > *');
-    
-    //Exemplo - define cor diferente para um município no início
-    //const vitoria = document.querySelector("svg #tracados path[id='3205309']")
-    //vitoria.setAttribute("fill", "lightblue");
+    mapaHandler.nomes = document.querySelectorAll('svg #nomes > *');
 
-    //Exemplo - esconder todos os nomes de municipio de uma vez via grupo
-    //const grupoLabels = document.querySelector('svg #nomes');
-    //grupoLabels.setAttribute("display", 'none');
-
-    //Exemplo - exibir o nome de apenas um município
-    //const nomes = document.querySelectorAll("svg #nomes > *");
-    //nomes.forEach(nome => {
-    //    if (nome.id != '3203205') {
-    //        nome.style.display = 'none';
-    //    }
-    //});
-
-    //Exemplo - exibir o traçado de apenas um município
-    //const nomes = document.querySelectorAll("svg #tracados > *"); 
-    //nomes.forEach(nome => {
-    //    if (nome.id != '3203205') {
-    //        nome.style.display = 'none';
-    //    }
-    //});
-
-    mapaControlador.configurarEventosDeHover();
+    mapaHandler.configurarEventosDeHover();
 
     //Click: apenas mostra um alerta contendo o nome e o código IBGE do município
-    mapaControlador.municipios.forEach(municipio => {
+    mapaHandler.municipios.forEach(municipio => {
         municipio.addEventListener("click", () => {
             const munObj = municipioData.find(m => m.codigoIbge === municipio.id);
             alert(`${munObj.codigoIbge} - ${munObj.nome}`);
         });
     });
-    
+
 });
 
-const mapaControlador = {
+const mapaHandler = {
 
     municipios: null,
     nomes: null,
@@ -82,48 +116,76 @@ const mapaControlador = {
         });
     },
 
-    //extras para exemplo
 
-    ressaltarGrandeVitoria() {
-
-        const municipiosGV = [
-            '3201308', //cariacica
-            '3202207', //fundao
-            '3202405', //guarapari
-            '3205002', //serra
-            '3205101', //viana
-            '3205200', //vila velha
-            '3205309',  //vitoria
-        ];
-
+    getElementoTracado(codigoIbge) {
+        let ret = null;
         this.municipios.forEach(mun => {
-            if (municipiosGV.includes(mun.id)) {
-                mun.setAttribute("fill", "#bbdefb");
-            }
-        });        
-    },
-
-    esconderNomes() {
-        this.nomes.forEach(nome => { 
-            nome.style.display = 'none';            
-        });
-    },
-
-    exibirApenasLinhares() {
-
-        this.municipios.forEach(mun => {
-            if (mun.id != '3203205') {
-                mun.style.display = 'none';
+            if (mun.id == codigoIbge) {
+                ret = mun;
             }
         });
+        return ret;
+    },
 
+    getElementoNome(codigoIbge) {
+        let ret = null;
         this.nomes.forEach(nome => {
-            if (nome.id != '3203205') {
-                nome.style.display = 'none';
+            if (nome.id == codigoIbge) {
+                ret = nome;
             }
         });
+        return ret;
     },
+
+    setCorMunicipio(codigoIbge, corHex) {
+        let mun = this.getElementoTracado(codigoIbge);
+        if (mun) {
+            mun.setAttribute("fill", corHex);
+        }
+    },
+
+    esconderTracado(codigoIbge) {
+        let mun = this.getElementoTracado(codigoIbge);
+        if (mun) {
+            mun.style.display = 'none';
+        }
+    },
+
+    esconderNome(codigoIbge) {
+        let nomeOuGrupo = this.getElementoNome(codigoIbge);
+        if (nomeOuGrupo) {
+            nomeOuGrupo.style.display = 'none';
+        }
+    },
+
+    customizarNome(codigoIbge, corHex, isNegrito) {
+
+        let nomeOuGrupo = this.getElementoNome(codigoIbge);
+
+        if (!nomeOuGrupo) return;
+
+        if (nomeOuGrupo.tagName == 'text') {
+            nomeOuGrupo.setAttribute("stroke", corHex);
+            nomeOuGrupo.setAttribute("fill", corHex);
+            if (isNegrito) {
+                nomeOuGrupo.setAttribute("font-weight", "bold");
+            }
+        }
+
+        if (nomeOuGrupo.tagName == 'g') {
+            let texts = nomeOuGrupo.querySelectorAll('text');
+
+            texts.forEach(t => {
+                t.setAttribute("stroke", corHex);
+                t.setAttribute("fill", corHex);
+                t.setAttribute("font-weight", "bold");
+            });
+        }
+    },
+
 };
+
+//extra - controle de zoom
 
 const zoomControls = {
 
@@ -142,31 +204,13 @@ const zoomControls = {
 
     zoomReset() {
         this.scale = 1;
-        this.applyZoom();        
+        this.applyZoom();
     },
 
     applyZoom() {
         this.mapa.style.transform = `scale(${this.scale})`;
     }
 }
-
-//controle de zoom
-
-
-//function zoomIn() {
-//    scale += 0.2;
-//    document.querySelector('.map-container svg').style.transform = `scale(${scale})`;
-//}
-//
-//function zoomOut() {
-//    scale -= 0.2;
-//    document.querySelector('.map-container svg').style.transform = `scale(${scale})`;
-//}
-//
-//function zoomReset() {
-//
-//}
-
 
 // Array contendo todos os 78 municípios capixabas, usando o código IBGE como identificador
 const municipioData = [
