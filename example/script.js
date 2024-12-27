@@ -1,7 +1,9 @@
 
 //funções de exemplo
 
-function destacarGrandeVitoria() {
+function destacarGrandeVitoriaInterior() {
+
+    mapaHandler.setAllTracados('#f0f4c3','#9fa8da');
 
     const municipiosGV = [
         '3201308', //cariacica
@@ -10,53 +12,40 @@ function destacarGrandeVitoria() {
         '3205002', //serra
         '3205101', //viana
         '3205200', //vila velha
-        '3205309',  //vitoria
+        '3205309', //vitoria
     ];
 
     municipiosGV.forEach(cod => {
-        mapaHandler.setCorMunicipio(cod, "#bbdefb");
+        mapaHandler.setTracado(cod, "#bbdefb");
     });
 }
 
 function esconderTodosOsNomes() {
-
-    mapaHandler.nomes.forEach(nome => {
-        mapaHandler.esconderNome(nome.id);
-    });
+    mapaHandler.hideAllNomes();
 }
 
 function exibirApenasLinhares() {
+    
+    mapaHandler.hideAllTracados();
+    mapaHandler.showTracado('3203205');
 
-    mapaHandler.municipios.forEach(mun => {
-        if (mun.id != '3203205') {
-            mapaHandler.esconderTracado(mun.id);
-        }
-    });
-
-    mapaHandler.nomes.forEach(nome => {
-        if (nome.id != '3203205') {
-            mapaHandler.esconderNome(nome.id);
-        }
-    });
+    mapaHandler.hideAllNomes();
+    mapaHandler.showNome('3203205');
 }
 
 function customizarColatina() {
-
-    mapaHandler.setCorMunicipio('3201506', "#c8e6c9");
-
+    mapaHandler.setTracado('3201506', "#a5d6a7");
     mapaHandler.customizarNome('3201506', '#bf360c');
 }
 
 function customizarCachoeiro() {
-
-    mapaHandler.setCorMunicipio('3201209', "#b39ddb");
-
+    mapaHandler.setTracado('3201209', '#b39ddb', 'black');
     mapaHandler.customizarNome('3201209', '#ffee58', true);
 }
 
 //
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
     // Pega todos os elementos 'path' de municípios
     mapaHandler.municipios = document.querySelectorAll("svg #tracados path");
@@ -80,6 +69,11 @@ const mapaHandler = {
 
     municipios: null,
     nomes: null,
+    corHover: "#fff59d",
+
+    init(svgSelector, corHover) {
+
+    },
 
     configurarEventosDeHover() {
 
@@ -89,11 +83,11 @@ const mapaHandler = {
             //Mouse over: faz o município aparecer com uma cor de destaque
             municipio.addEventListener("mouseover", () => {
 
-                // Armazena a cor original antes de alterar para a cor amarela
+                // Armazena a cor original antes de alterar para a cor de hover
                 const originalColor = municipio.getAttribute("fill");
 
-                // Define o atributo fill para a cor amarela
-                municipio.setAttribute("fill", "#fff9c4");
+                // Define o atributo fill para a cor de hover
+                municipio.setAttribute("fill", this.corHover);
 
                 // Armazena a cor original no próprio município, para usá-la depois
                 municipio.setAttribute("data-original-color", originalColor);
@@ -135,27 +129,65 @@ const mapaHandler = {
             }
         });
         return ret;
-    },
+    },    
 
-    setCorMunicipio(codigoIbge, corHex) {
+    setTracado(codigoIbge, corFill, corStroke) {
         let mun = this.getElementoTracado(codigoIbge);
-        if (mun) {
-            mun.setAttribute("fill", corHex);
-        }
+        if (!mun) return;
+        if (corFill) mun.setAttribute("fill", corFill);
+        if (corStroke) mun.setAttribute("stroke", corStroke);        
     },
 
-    esconderTracado(codigoIbge) {
+    setAllTracados(corFill, corStroke) {
+        mapaHandler.municipios.forEach(mun => {
+            this.setTracado(mun.id, corFill, corStroke);            
+        });
+    },
+
+    hideTracado(codigoIbge) {
         let mun = this.getElementoTracado(codigoIbge);
         if (mun) {
             mun.style.display = 'none';
         }
     },
 
-    esconderNome(codigoIbge) {
+    hideAllTracados() {
+        mapaHandler.municipios.forEach(nome => {
+            this.hideTracado(nome.id);
+        });
+    },
+
+    showTracado(codigoIbge) {
+        let mun = this.getElementoTracado(codigoIbge);
+        if (mun) {
+            mun.style.display = '';
+        }
+    },
+
+    hideNome(codigoIbge) {
         let nomeOuGrupo = this.getElementoNome(codigoIbge);
         if (nomeOuGrupo) {
             nomeOuGrupo.style.display = 'none';
         }
+    },
+
+    hideAllNomes() {
+        mapaHandler.nomes.forEach(nome => {
+            this.hideNome(nome.id);
+        });
+    },
+
+    showNome(codigoIbge) {
+        let nomeOuGrupo = this.getElementoNome(codigoIbge);
+        if (nomeOuGrupo) {
+            nomeOuGrupo.style.display = '';
+        }
+    },
+
+    showAllNomes() {
+        mapaHandler.nomes.forEach(nome => {
+            this.showNome(nome.id);
+        });
     },
 
     customizarNome(codigoIbge, corHex, isNegrito) {
@@ -165,7 +197,6 @@ const mapaHandler = {
         if (!nomeOuGrupo) return;
 
         if (nomeOuGrupo.tagName == 'text') {
-            nomeOuGrupo.setAttribute("stroke", corHex);
             nomeOuGrupo.setAttribute("fill", corHex);
             if (isNegrito) {
                 nomeOuGrupo.setAttribute("font-weight", "bold");
