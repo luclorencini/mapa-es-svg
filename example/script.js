@@ -51,44 +51,65 @@ function customizarCachoeiro() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    mapaHandler.init('svg');
+    const elObj = document.getElementById('map-es-obj');
 
-    //Click: apenas mostra um alerta contendo o nome e o código IBGE do município
-    mapaHandler.tracados.forEach(t => {
-        t.addEventListener("click", () => {
-            const munObj = municipioData.find(m => m.codigoIbge === t.id);
-            alert(`${munObj.codigoIbge} - ${munObj.nome}`);
+    //espera o <object> carregar completamente para ler o conteúdo do svg
+    elObj.addEventListener('load', () => {
+            
+        const svgDoc = elObj.contentDocument;
+        const svgElement = svgDoc.querySelector('svg');
+        
+        //inicializa o handler para facilitar o uso do mapa
+        mapaHandler.init(svgElement);
+
+        //CSS - configura estilos básicos do mapa
+
+        //cursor pointer para cada município (vai poder clicar)
+        mapaHandler.tracados.forEach(t => {
+            t.style.cursor = 'pointer';
+        });
+
+        //seta fonte para cada nome
+        mapaHandler.nomes.forEach(n => {
+            n.style.fontFamily = 'Arial'; // "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        });
+
+        //Click: apenas mostra um alerta contendo o nome e o código IBGE do município
+        mapaHandler.tracados.forEach(t => {
+            t.addEventListener("click", () => {
+                const munObj = municipioData.find(m => m.codigoIbge === t.id);
+                alert(`${munObj.codigoIbge} - ${munObj.nome}`);
+            });
         });
     });
-
 });
 
 const mapaHandler = {
 
     tracados: null,
     nomes: null,
+    svgElement: null,
     corHover: "#fff59d",
 
-    init(svgSelector, corHover) {
+    init(svgElement, corHover) {
 
-        const svgEl = document.querySelector(svgSelector);
+        if (!svgElement){
+            console.error('elemento SVG não informado');
+            return;
+        }
+
+        this.svgElement = svgElement;
 
         // Pega todos os elementos 'path' de municípios
-        mapaHandler.tracados = svgEl.querySelectorAll("#tracados path");
+        mapaHandler.tracados = this.svgElement.querySelectorAll("#tracados path");
 
         // Pega todos os elementos de nomes de municípios, seja um 'text' ou um 'grupo' de textos
-        mapaHandler.nomes = svgEl.querySelectorAll('#nomes > *');
+        mapaHandler.nomes = this.svgElement.querySelectorAll('#nomes > *');
 
         // Seta cor de hover se informada
         if (corHover) this.corHover = corHover;
-
-        this._configurarEventosDeHover();
-
-    },
-
-    _configurarEventosDeHover() {
-
-        //Ajustes do mapa por traçado
+        
+        //Configura eventos de hover dos traçados dos municípios
         this.tracados.forEach(t => {
 
             //Mouse over: faz o município aparecer com uma cor de destaque
@@ -120,8 +141,7 @@ const mapaHandler = {
             label.style.pointerEvents = 'none';
         });
     },
-
-
+    
     getTracado(codigoIbge) {
         let ret = null;
         this.tracados.forEach(t => {
@@ -249,7 +269,7 @@ const mapaHandler = {
 const zoomControls = {
 
     scale: 1,
-    mapa: document.querySelector('.map-container svg'),
+    mapa:  document.querySelector('#map-es-obj'),
 
     zoomIn() {
         this.scale += 0.2;
