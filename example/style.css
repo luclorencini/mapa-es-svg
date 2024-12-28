@@ -33,6 +33,7 @@ h1 {
 & .info-container {
     width: 25rem;
     padding: 5px;
+    overflow-y: scroll;
 }
 
 #map {

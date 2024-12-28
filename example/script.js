@@ -1,9 +1,9 @@
-
+//----------------------------------------------
 //funções de exemplo
 
 function destacarGrandeVitoriaInterior() {
 
-    mapaHandler.setAllTracados('#f0f4c3','#9fa8da');
+    mapaHandler.setAllTracados('#f0f4c3', '#9fa8da');
 
     const municipiosGV = [
         '3201308', //cariacica
@@ -24,8 +24,12 @@ function esconderTodosOsNomes() {
     mapaHandler.hideAllNomes();
 }
 
+function exibirTodosOsNomes() {
+    mapaHandler.showAllNomes();
+}
+
 function exibirApenasLinhares() {
-    
+
     mapaHandler.hideAllTracados();
     mapaHandler.showTracado('3203205');
 
@@ -35,30 +39,24 @@ function exibirApenasLinhares() {
 
 function customizarColatina() {
     mapaHandler.setTracado('3201506', "#a5d6a7");
-    mapaHandler.customizarNome('3201506', '#bf360c');
+    mapaHandler.setNome('3201506', '#bf360c');
 }
 
 function customizarCachoeiro() {
     mapaHandler.setTracado('3201209', '#b39ddb', 'black');
-    mapaHandler.customizarNome('3201209', '#ffee58', true);
+    mapaHandler.setNome('3201209', '#ffee58', true);
 }
 
-//
+//----------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Pega todos os elementos 'path' de municípios
-    mapaHandler.municipios = document.querySelectorAll("svg #tracados path");
-
-    // Pega todos os elementos de nomes de municípios, seja um 'text' ou um 'grupo' de textos
-    mapaHandler.nomes = document.querySelectorAll('svg #nomes > *');
-
-    mapaHandler.configurarEventosDeHover();
+    mapaHandler.init('svg');
 
     //Click: apenas mostra um alerta contendo o nome e o código IBGE do município
-    mapaHandler.municipios.forEach(municipio => {
-        municipio.addEventListener("click", () => {
-            const munObj = municipioData.find(m => m.codigoIbge === municipio.id);
+    mapaHandler.tracados.forEach(t => {
+        t.addEventListener("click", () => {
+            const munObj = municipioData.find(m => m.codigoIbge === t.id);
             alert(`${munObj.codigoIbge} - ${munObj.nome}`);
         });
     });
@@ -67,40 +65,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const mapaHandler = {
 
-    municipios: null,
+    tracados: null,
     nomes: null,
     corHover: "#fff59d",
 
     init(svgSelector, corHover) {
 
+        const svgEl = document.querySelector(svgSelector);
+
+        // Pega todos os elementos 'path' de municípios
+        mapaHandler.tracados = svgEl.querySelectorAll("#tracados path");
+
+        // Pega todos os elementos de nomes de municípios, seja um 'text' ou um 'grupo' de textos
+        mapaHandler.nomes = svgEl.querySelectorAll('#nomes > *');
+
+        // Seta cor de hover se informada
+        if (corHover) this.corHover = corHover;
+
+        this._configurarEventosDeHover();
+
     },
 
-    configurarEventosDeHover() {
+    _configurarEventosDeHover() {
 
-        //Ajustes do mapa por município
-        this.municipios.forEach(municipio => {
+        //Ajustes do mapa por traçado
+        this.tracados.forEach(t => {
 
             //Mouse over: faz o município aparecer com uma cor de destaque
-            municipio.addEventListener("mouseover", () => {
+            t.addEventListener("mouseover", () => {
 
                 // Armazena a cor original antes de alterar para a cor de hover
-                const originalColor = municipio.getAttribute("fill");
+                const originalColor = t.getAttribute("fill");
 
                 // Define o atributo fill para a cor de hover
-                municipio.setAttribute("fill", this.corHover);
+                t.setAttribute("fill", this.corHover);
 
                 // Armazena a cor original no próprio município, para usá-la depois
-                municipio.setAttribute("data-original-color", originalColor);
+                t.setAttribute("data-original-color", originalColor);
             });
 
             //Mouse over: faz o município retornar para sua cor original, salva em 'mouseover'
-            municipio.addEventListener("mouseout", () => {
+            t.addEventListener("mouseout", () => {
 
                 // Restaura a cor original do path
-                const originalColor = municipio.getAttribute("data-original-color");
+                const originalColor = t.getAttribute("data-original-color");
 
                 // Volta à cor original que foi armazenada
-                municipio.setAttribute("fill", originalColor);
+                t.setAttribute("fill", originalColor);
             });
         });
 
@@ -111,109 +122,126 @@ const mapaHandler = {
     },
 
 
-    getElementoTracado(codigoIbge) {
+    getTracado(codigoIbge) {
         let ret = null;
-        this.municipios.forEach(mun => {
-            if (mun.id == codigoIbge) {
-                ret = mun;
+        this.tracados.forEach(t => {
+            if (t.id == codigoIbge) {
+                ret = t;
             }
         });
         return ret;
     },
 
-    getElementoNome(codigoIbge) {
-        let ret = null;
-        this.nomes.forEach(nome => {
-            if (nome.id == codigoIbge) {
-                ret = nome;
-            }
-        });
-        return ret;
-    },    
-
     setTracado(codigoIbge, corFill, corStroke) {
-        let mun = this.getElementoTracado(codigoIbge);
-        if (!mun) return;
-        if (corFill) mun.setAttribute("fill", corFill);
-        if (corStroke) mun.setAttribute("stroke", corStroke);        
+        let t = this.getTracado(codigoIbge);
+        if (!t) return;
+        if (corFill) t.setAttribute("fill", corFill);
+        if (corStroke) t.setAttribute("stroke", corStroke);
     },
 
     setAllTracados(corFill, corStroke) {
-        mapaHandler.municipios.forEach(mun => {
-            this.setTracado(mun.id, corFill, corStroke);            
+        mapaHandler.tracados.forEach(t => {
+            this.setTracado(t.id, corFill, corStroke);
         });
     },
 
     hideTracado(codigoIbge) {
-        let mun = this.getElementoTracado(codigoIbge);
-        if (mun) {
-            mun.style.display = 'none';
+        let t = this.getTracado(codigoIbge);
+        if (t) {
+            t.style.display = 'none';
         }
     },
 
     hideAllTracados() {
-        mapaHandler.municipios.forEach(nome => {
-            this.hideTracado(nome.id);
+        mapaHandler.tracados.forEach(t => {
+            this.hideTracado(t.id);
         });
     },
 
     showTracado(codigoIbge) {
-        let mun = this.getElementoTracado(codigoIbge);
-        if (mun) {
-            mun.style.display = '';
+        let t = this.getTracado(codigoIbge);
+        if (t) {
+            t.style.display = '';
         }
     },
 
+    showAllTracados() {
+        mapaHandler.tracados.forEach(t => {
+            this.showTracado(t.id);
+        });
+    },
+
+
+    getNome(codigoIbge) {
+        let ret = null;
+        this.nomes.forEach(n => {
+            if (n.id == codigoIbge) {
+                ret = n;
+            }
+        });
+        return ret;
+    },
+
+    setNome(codigoIbge, corHex, isNegrito) {
+
+        //método interno que manipula diretamente o <text>
+        const setTextAttrs = (elText, corHex, isNegrito) => {
+            elText.setAttribute("stroke", corHex);
+            elText.setAttribute("fill", corHex);
+            if (isNegrito) {
+                elText.setAttribute("font-weight", "bold");
+            }
+        }
+
+        let nog = this.getNome(codigoIbge);
+        if (!nog) return;
+
+        //se o elemento for text, ajusta-o diretamente
+        if (nog.tagName == 'text') {
+            setTextAttrs(nog, corHex, isNegrito);
+        }
+
+        //se o elemento for group, obtém todos os texts contidos nele e os ajusta
+        if (nog.tagName == 'g') {
+            let texts = nog.querySelectorAll('text');
+
+            texts.forEach(t => {
+                setTextAttrs(t, corHex, isNegrito);                
+            });
+        }        
+    },
+
+    setAllNomes(corHex, isNegrito) {
+        mapaHandler.nomes.forEach(n => {
+            this.setNome(n.id, corHex, isNegrito);
+        });
+    },
+
     hideNome(codigoIbge) {
-        let nomeOuGrupo = this.getElementoNome(codigoIbge);
-        if (nomeOuGrupo) {
-            nomeOuGrupo.style.display = 'none';
+        let nog = this.getNome(codigoIbge);
+        if (nog) {
+            nog.style.display = 'none';
         }
     },
 
     hideAllNomes() {
-        mapaHandler.nomes.forEach(nome => {
-            this.hideNome(nome.id);
+        mapaHandler.nomes.forEach(n => {
+            this.hideNome(n.id);
         });
     },
 
     showNome(codigoIbge) {
-        let nomeOuGrupo = this.getElementoNome(codigoIbge);
-        if (nomeOuGrupo) {
-            nomeOuGrupo.style.display = '';
+        let nog = this.getNome(codigoIbge);
+        if (nog) {
+            nog.style.display = '';
         }
     },
 
     showAllNomes() {
-        mapaHandler.nomes.forEach(nome => {
-            this.showNome(nome.id);
+        mapaHandler.nomes.forEach(n => {
+            this.showNome(n.id);
         });
     },
-
-    customizarNome(codigoIbge, corHex, isNegrito) {
-
-        let nomeOuGrupo = this.getElementoNome(codigoIbge);
-
-        if (!nomeOuGrupo) return;
-
-        if (nomeOuGrupo.tagName == 'text') {
-            nomeOuGrupo.setAttribute("fill", corHex);
-            if (isNegrito) {
-                nomeOuGrupo.setAttribute("font-weight", "bold");
-            }
-        }
-
-        if (nomeOuGrupo.tagName == 'g') {
-            let texts = nomeOuGrupo.querySelectorAll('text');
-
-            texts.forEach(t => {
-                t.setAttribute("stroke", corHex);
-                t.setAttribute("fill", corHex);
-                t.setAttribute("font-weight", "bold");
-            });
-        }
-    },
-
 };
 
 //extra - controle de zoom
