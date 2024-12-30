@@ -13,7 +13,7 @@
  * 
  * @type {Object}
  */
-const mapaEsHandler = {
+const mapaEs = {
     /**
      * Lista de todos os elementos 'path' que representam os traçados dos municípios.
      * @type {NodeListOf<SVGPathElement>}
@@ -46,17 +46,17 @@ const mapaEsHandler = {
     init(svgElement, corHover) {
 
         if (!svgElement) {
-            console.error('mapaEsHandler - init: elemento SVG não informado');
+            console.error('mapaEs - init: elemento SVG não informado');
             return;
         }
 
         this.svgElement = svgElement;
 
         // Pega todos os elementos 'path' de municípios
-        mapaEsHandler.tracados = this.svgElement.querySelectorAll("#tracados path");
+        mapaEs.tracados = this.svgElement.querySelectorAll("#tracados path");
 
         // Pega todos os elementos de nomes de municípios, seja um 'text' ou um 'grupo' de textos
-        mapaEsHandler.nomes = this.svgElement.querySelectorAll('#nomes > *');
+        mapaEs.nomes = this.svgElement.querySelectorAll('#nomes > *');
 
         // Seta cor de hover se informada
         if (corHover) this.corHover = corHover;
@@ -118,7 +118,7 @@ const mapaEsHandler = {
      * @param {string} corStroke - A cor da borda para todos os traçados.
      */
     setAllTracados(corFill, corStroke) {
-        mapaEsHandler.tracados.forEach(t => {
+        mapaEs.tracados.forEach(t => {
             this.setTracado(t.id, corFill, corStroke);
         });
     },
@@ -138,7 +138,7 @@ const mapaEsHandler = {
      * Esconde todos os traçados dos municípios.
      */
     hideAllTracados() {
-        mapaEsHandler.tracados.forEach(t => {
+        mapaEs.tracados.forEach(t => {
             this.hideTracado(t.id);
         });
     },
@@ -158,7 +158,7 @@ const mapaEsHandler = {
      * Exibe todos os traçados dos municípios.
      */
     showAllTracados() {
-        mapaEsHandler.tracados.forEach(t => {
+        mapaEs.tracados.forEach(t => {
             this.showTracado(t.id);
         });
     },
@@ -217,7 +217,7 @@ const mapaEsHandler = {
      * @param {boolean} isNegrito - Se verdadeiro, aplica negrito a todos os nomes dos municípios; se falso, retira.
      */
     setAllNomes(corHex, isNegrito) {
-        mapaEsHandler.nomes.forEach(n => {
+        mapaEs.nomes.forEach(n => {
             this.setNome(n.id, corHex, isNegrito);
         });
     },
@@ -237,7 +237,7 @@ const mapaEsHandler = {
      * Esconde todos os nomes dos municípios.
      */
     hideAllNomes() {
-        mapaEsHandler.nomes.forEach(n => {
+        mapaEs.nomes.forEach(n => {
             this.hideNome(n.id);
         });
     },
@@ -257,7 +257,7 @@ const mapaEsHandler = {
      * Exibe todos os nomes dos municípios.
      */
     showAllNomes() {
-        mapaEsHandler.nomes.forEach(n => {
+        mapaEs.nomes.forEach(n => {
             this.showNome(n.id);
         });
     },

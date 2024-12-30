@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Developed by Luciano Lorencini - https://github.com/luclorencini/mapa-es-svg  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg version="1.1" id="mapa-es-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="541.418px" height="789.165px" viewBox="0 0 541.418 789.165" enable-background="new 0 0 541.418 789.165" xml:space="preserve">
 <g id="tracados">
 	<path id="3200102" fill="white" stroke="#72706F" stroke-width="0.38" stroke-linecap="round" stroke-linejoin="round" d="

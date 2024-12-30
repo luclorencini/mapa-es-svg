@@ -3,7 +3,7 @@
 
 function destacarGrandeVitoriaInterior() {
 
-    mapaEsHandler.setAllTracados('#f0f4c3', '#9fa8da');
+    mapaEs.setAllTracados('#f0f4c3', '#9fa8da');
 
     const municipiosGV = [
         '3201308', //cariacica
@@ -16,35 +16,35 @@ function destacarGrandeVitoriaInterior() {
     ];
 
     municipiosGV.forEach(cod => {
-        mapaEsHandler.setTracado(cod, "#bbdefb");
+        mapaEs.setTracado(cod, "#bbdefb");
     });
 }
 
 function esconderTodosOsNomes() {
-    mapaEsHandler.hideAllNomes();
+    mapaEs.hideAllNomes();
 }
 
 function exibirTodosOsNomes() {
-    mapaEsHandler.showAllNomes();
+    mapaEs.showAllNomes();
 }
 
 function exibirApenasLinhares() {
 
-    mapaEsHandler.hideAllTracados();
-    mapaEsHandler.showTracado('3203205');
+    mapaEs.hideAllTracados();
+    mapaEs.showTracado('3203205');
 
-    mapaEsHandler.hideAllNomes();
-    mapaEsHandler.showNome('3203205');
+    mapaEs.hideAllNomes();
+    mapaEs.showNome('3203205');
 }
 
 function customizarColatina() {
-    mapaEsHandler.setTracado('3201506', "#a5d6a7");
-    mapaEsHandler.setNome('3201506', '#bf360c');
+    mapaEs.setTracado('3201506', "#a5d6a7");
+    mapaEs.setNome('3201506', '#bf360c');
 }
 
 function customizarCachoeiro() {
-    mapaEsHandler.setTracado('3201209', '#b39ddb', 'black');
-    mapaEsHandler.setNome('3201209', '#ffee58', true);
+    mapaEs.setTracado('3201209', '#b39ddb', 'black');
+    mapaEs.setNome('3201209', '#ffee58', true);
 }
 
 //----------------------------------------------
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Ao fazer isso, as tags internas do svg passam a fazer parte do DOM,
     //  o que nos permite manipulá-los com css e javascript.
 
-    const response = await fetch('../src/mapa-es.svg');
+    const response = await fetch('../dist/mapa-es.svg');
     const svgContent = await response.text();
 
     const container = document.querySelector('#map-holder');
@@ -64,11 +64,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     const svgElement = container.querySelector('svg');
     
-    //inicializa o mapaEsHandler para facilitar o uso do mapa
-    mapaEsHandler.init(svgElement);
+    //inicializa o mapaEs para facilitar o uso do mapa
+    mapaEs.init(svgElement);
     
     //Click: mostra um alerta contendo o nome e o código IBGE do município
-    mapaEsHandler.tracados.forEach(t => {
+    mapaEs.tracados.forEach(t => {
         t.addEventListener("click", () => {
             const munObj = municipioData.find(m => m.codigoIbge === t.id);
             alert(`${munObj.codigoIbge} - ${munObj.nome}`);
