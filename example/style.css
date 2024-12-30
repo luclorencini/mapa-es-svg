@@ -26,28 +26,13 @@ h1 {
     position: relative;
 }
 
-& svg {
-    height: 950px;
-}
-
 & .info-container {
     width: 25rem;
     padding: 5px;
     overflow-y: scroll;
 }
 
-#map {
-    width: 100%;
-    height: auto;
-    background-color: white;
-}
-
-#info {
-    margin-top: 10px;
-    height: 20px;
-    font-size: 24px;
-    font-weight: bold;
-}
+/* Controles de zoom */
 
 .zoom-controls {
     position: fixed;
@@ -63,6 +48,8 @@ h1 {
     color: white;
     border: none;
 }
+
+/* Botões de ação */
 
 .button-action {
     padding: 12px;
@@ -80,11 +67,12 @@ h1 {
     background-color: #d32f2f;
 }
 
-/* 
+/* Customização inicial do mapa svg */
+
 svg #tracados path {
     cursor: pointer;
 }
 
 svg #nomes text {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-} */
+}

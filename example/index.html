@@ -10,7 +10,7 @@
 	<h1>Mapa Interativo do Espírito Santo</h1>
 	<div class="tela-dividida">
 		<div class="map-container">
-			<object id="map-es-obj" type="image/svg+xml" data="../src/mapa-es.svg"></object>			
+			<div id="map-holder"></div>
 		</div>
 		<div class="info-container">
 
@@ -19,7 +19,6 @@
 
 			<div>
 				<h4>Eventos tratados neste exemplo:</h4>
-
 				<ul>
 					<li>
 						<strong>mouseover</strong>: ao passar o mouse, faz o município aparecer com uma cor de fundo de destaque, enquanto guarda a cor original.
@@ -58,6 +57,7 @@
 		<button class="button-zoom" onclick="zoomControls.zoomReset()">Reset</button>
 	</div>
 
+	<script src="../src/mapaEsHandler.js"></script>
 	<script src="script.js"></script>
 </body>
 </html>

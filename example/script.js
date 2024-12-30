@@ -3,7 +3,7 @@
 
 function destacarGrandeVitoriaInterior() {
 
-    mapaHandler.setAllTracados('#f0f4c3', '#9fa8da');
+    mapaEsHandler.setAllTracados('#f0f4c3', '#9fa8da');
 
     const municipiosGV = [
         '3201308', //cariacica
@@ -16,278 +16,101 @@ function destacarGrandeVitoriaInterior() {
     ];
 
     municipiosGV.forEach(cod => {
-        mapaHandler.setTracado(cod, "#bbdefb");
+        mapaEsHandler.setTracado(cod, "#bbdefb");
     });
 }
 
 function esconderTodosOsNomes() {
-    mapaHandler.hideAllNomes();
+    mapaEsHandler.hideAllNomes();
 }
 
 function exibirTodosOsNomes() {
-    mapaHandler.showAllNomes();
+    mapaEsHandler.showAllNomes();
 }
 
 function exibirApenasLinhares() {
 
-    mapaHandler.hideAllTracados();
-    mapaHandler.showTracado('3203205');
+    mapaEsHandler.hideAllTracados();
+    mapaEsHandler.showTracado('3203205');
 
-    mapaHandler.hideAllNomes();
-    mapaHandler.showNome('3203205');
+    mapaEsHandler.hideAllNomes();
+    mapaEsHandler.showNome('3203205');
 }
 
 function customizarColatina() {
-    mapaHandler.setTracado('3201506', "#a5d6a7");
-    mapaHandler.setNome('3201506', '#bf360c');
+    mapaEsHandler.setTracado('3201506', "#a5d6a7");
+    mapaEsHandler.setNome('3201506', '#bf360c');
 }
 
 function customizarCachoeiro() {
-    mapaHandler.setTracado('3201209', '#b39ddb', 'black');
-    mapaHandler.setNome('3201209', '#ffee58', true);
+    mapaEsHandler.setTracado('3201209', '#b39ddb', 'black');
+    mapaEsHandler.setNome('3201209', '#ffee58', true);
 }
 
 //----------------------------------------------
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-    const elObj = document.getElementById('map-es-obj');
+    // Esta é a melhor forma de inserir um SVG na página de forma a poder manipulá-lo.
+    // Buscamos o arquivo SVG via fetch e o inserimos em uma div.
+    // Ao fazer isso, as tags internas do svg passam a fazer parte do DOM,
+    //  o que nos permite manipulá-los com css e javascript.
 
-    //espera o <object> carregar completamente para ler o conteúdo do svg
-    elObj.addEventListener('load', () => {
-            
-        const svgDoc = elObj.contentDocument;
-        const svgElement = svgDoc.querySelector('svg');
-        
-        //inicializa o handler para facilitar o uso do mapa
-        mapaHandler.init(svgElement);
+    const response = await fetch('../src/mapa-es.svg');
+    const svgContent = await response.text();
 
-        //CSS - configura estilos básicos do mapa
-
-        //cursor pointer para cada município (vai poder clicar)
-        mapaHandler.tracados.forEach(t => {
-            t.style.cursor = 'pointer';
-        });
-
-        //seta fonte para cada nome
-        mapaHandler.nomes.forEach(n => {
-            n.style.fontFamily = 'Arial'; // "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-        });
-
-        //Click: apenas mostra um alerta contendo o nome e o código IBGE do município
-        mapaHandler.tracados.forEach(t => {
-            t.addEventListener("click", () => {
-                const munObj = municipioData.find(m => m.codigoIbge === t.id);
-                alert(`${munObj.codigoIbge} - ${munObj.nome}`);
-            });
-        });
-    });
-});
-
-const mapaHandler = {
-
-    tracados: null,
-    nomes: null,
-    svgElement: null,
-    corHover: "#fff59d",
-
-    init(svgElement, corHover) {
-
-        if (!svgElement){
-            console.error('elemento SVG não informado');
-            return;
-        }
-
-        this.svgElement = svgElement;
-
-        // Pega todos os elementos 'path' de municípios
-        mapaHandler.tracados = this.svgElement.querySelectorAll("#tracados path");
-
-        // Pega todos os elementos de nomes de municípios, seja um 'text' ou um 'grupo' de textos
-        mapaHandler.nomes = this.svgElement.querySelectorAll('#nomes > *');
-
-        // Seta cor de hover se informada
-        if (corHover) this.corHover = corHover;
-        
-        //Configura eventos de hover dos traçados dos municípios
-        this.tracados.forEach(t => {
-
-            //Mouse over: faz o município aparecer com uma cor de destaque
-            t.addEventListener("mouseover", () => {
-
-                // Armazena a cor original antes de alterar para a cor de hover
-                const originalColor = t.getAttribute("fill");
-
-                // Define o atributo fill para a cor de hover
-                t.setAttribute("fill", this.corHover);
-
-                // Armazena a cor original no próprio município, para usá-la depois
-                t.setAttribute("data-original-color", originalColor);
-            });
-
-            //Mouse over: faz o município retornar para sua cor original, salva em 'mouseover'
-            t.addEventListener("mouseout", () => {
-
-                // Restaura a cor original do path
-                const originalColor = t.getAttribute("data-original-color");
-
-                // Volta à cor original que foi armazenada
-                t.setAttribute("fill", originalColor);
-            });
-        });
-
-        //Macete: ajusta labels dos nomes dos municípios para não atrapalhar o mouseover (senão, ao passar o mouse sobre o label, não ativa a cor do município)
-        this.nomes.forEach(label => {
-            label.style.pointerEvents = 'none';
-        });
-    },
+    const container = document.querySelector('#map-holder');
+    container.innerHTML = svgContent;
     
-    getTracado(codigoIbge) {
-        let ret = null;
-        this.tracados.forEach(t => {
-            if (t.id == codigoIbge) {
-                ret = t;
-            }
+    const svgElement = container.querySelector('svg');
+    
+    //inicializa o mapaEsHandler para facilitar o uso do mapa
+    mapaEsHandler.init(svgElement);
+    
+    //Click: mostra um alerta contendo o nome e o código IBGE do município
+    mapaEsHandler.tracados.forEach(t => {
+        t.addEventListener("click", () => {
+            const munObj = municipioData.find(m => m.codigoIbge === t.id);
+            alert(`${munObj.codigoIbge} - ${munObj.nome}`);
         });
-        return ret;
-    },
+    });    
 
-    setTracado(codigoIbge, corFill, corStroke) {
-        let t = this.getTracado(codigoIbge);
-        if (!t) return;
-        if (corFill) t.setAttribute("fill", corFill);
-        if (corStroke) t.setAttribute("stroke", corStroke);
-    },
-
-    setAllTracados(corFill, corStroke) {
-        mapaHandler.tracados.forEach(t => {
-            this.setTracado(t.id, corFill, corStroke);
-        });
-    },
-
-    hideTracado(codigoIbge) {
-        let t = this.getTracado(codigoIbge);
-        if (t) {
-            t.style.display = 'none';
-        }
-    },
-
-    hideAllTracados() {
-        mapaHandler.tracados.forEach(t => {
-            this.hideTracado(t.id);
-        });
-    },
-
-    showTracado(codigoIbge) {
-        let t = this.getTracado(codigoIbge);
-        if (t) {
-            t.style.display = '';
-        }
-    },
-
-    showAllTracados() {
-        mapaHandler.tracados.forEach(t => {
-            this.showTracado(t.id);
-        });
-    },
-
-
-    getNome(codigoIbge) {
-        let ret = null;
-        this.nomes.forEach(n => {
-            if (n.id == codigoIbge) {
-                ret = n;
-            }
-        });
-        return ret;
-    },
-
-    setNome(codigoIbge, corHex, isNegrito) {
-
-        //método interno que manipula diretamente o <text>
-        const setTextAttrs = (elText, corHex, isNegrito) => {
-            elText.setAttribute("stroke", corHex);
-            elText.setAttribute("fill", corHex);
-            if (isNegrito) {
-                elText.setAttribute("font-weight", "bold");
-            }
-        }
-
-        let nog = this.getNome(codigoIbge);
-        if (!nog) return;
-
-        //se o elemento for text, ajusta-o diretamente
-        if (nog.tagName == 'text') {
-            setTextAttrs(nog, corHex, isNegrito);
-        }
-
-        //se o elemento for group, obtém todos os texts contidos nele e os ajusta
-        if (nog.tagName == 'g') {
-            let texts = nog.querySelectorAll('text');
-
-            texts.forEach(t => {
-                setTextAttrs(t, corHex, isNegrito);                
-            });
-        }        
-    },
-
-    setAllNomes(corHex, isNegrito) {
-        mapaHandler.nomes.forEach(n => {
-            this.setNome(n.id, corHex, isNegrito);
-        });
-    },
-
-    hideNome(codigoIbge) {
-        let nog = this.getNome(codigoIbge);
-        if (nog) {
-            nog.style.display = 'none';
-        }
-    },
-
-    hideAllNomes() {
-        mapaHandler.nomes.forEach(n => {
-            this.hideNome(n.id);
-        });
-    },
-
-    showNome(codigoIbge) {
-        let nog = this.getNome(codigoIbge);
-        if (nog) {
-            nog.style.display = '';
-        }
-    },
-
-    showAllNomes() {
-        mapaHandler.nomes.forEach(n => {
-            this.showNome(n.id);
-        });
-    },
-};
+    zoomControls.init();
+});
 
 //extra - controle de zoom
 
 const zoomControls = {
 
     scale: 1,
-    mapa:  document.querySelector('#map-es-obj'),
+    margin: 0,
+    mapa: null,
+
+    init() {
+        this.mapa = document.querySelector('svg');
+    },
 
     zoomIn() {
         this.scale += 0.2;
+        this.margin += 75;
         this.applyZoom();
     },
 
     zoomOut() {
         this.scale -= 0.2;
+        this.margin -= 75;
         this.applyZoom();
     },
 
     zoomReset() {
         this.scale = 1;
+        this.margin = 0;
         this.applyZoom();
     },
 
     applyZoom() {
         this.mapa.style.transform = `scale(${this.scale})`;
+        this.mapa.style.marginTop = `${this.margin}px`;
     }
 }
 
