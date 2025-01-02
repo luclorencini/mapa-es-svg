@@ -19,7 +19,7 @@ h1 {
 }
 
 & .map-container {
-    width: 70%;
+    width: 100vw;
     margin-left: auto;
     margin-right: auto;
     overflow-y: scroll;
@@ -27,9 +27,15 @@ h1 {
 }
 
 & .info-container {
-    width: 25rem;
-    padding: 5px;
-    overflow-y: scroll;
+    width: 30rem;
+    padding: 10px;
+    margin: 0;
+}
+
+&& .destaque {
+    background-color: #fff59d;
+    padding: 5px 0px; 
+    margin: -10px;
 }
 
 /* Controles de zoom */
@@ -41,7 +47,7 @@ h1 {
 }
 
 .button-zoom {
-    padding: 5px;
+    padding: 7px;
     font-weight: bold;
     font-size: 1rem;
     background-color: #616161;

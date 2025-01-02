@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mapaEs - Mapa Interativo - Espírito Santo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1>mapaEs - Mapa Interativo do Espírito Santo</h1>
+	<div class="tela-dividida">
+		<div class="map-container">
+			<div id="map-holder"></div>
+		</div>
+		<div class="info-container">
+			
+			<div class="destaque">
+				<h4>Fontes e documentação completa em:</h4>
+				<h4>
+					<a target="_blank" href="https://github.com/luclorencini/mapa-es-svg">https://github.com/luclorencini/mapa-es-svg</a>
+				</h4>
+			</div>
+
+			<h4>Customizações feitas neste exemplo</h4>
+
+			<p>Através de CSS e Javascript, você pode realizar várias customizações.</p>
+			<strong>Clique em um município para exibir alerta com seu nome e código IBGE</strong>
+				
+			<p>Clique nos botões abaixo para ver exemplos:</p>
+
+			<button class="button-action" onclick="destacarGrandeVitoriaInterior()">Destacar Grande Vitória e Interior</button>
+			<button class="button-action" onclick="customizarColatina()">Customizar Colatina</button>
+			<button class="button-action" onclick="customizarCachoeiro()">Customizar Cachoeiro</button>
+			<button class="button-action" onclick="esconderTodosOsNomes()">Esconder o nome dos municípios</button>
+			<button class="button-action" onclick="exibirTodosOsNomes()">Exibir o nome dos municípios</button>
+			<button class="button-action" onclick="exibirApenasLinhares()">Exibir apenas Linhares</button>
+
+			<button class="button-action button-reset" onclick="window.location.reload();">RESET</button>
+
+		</div>
+	</div>
+
+	<div class="zoom-controls">
+		<button class="button-zoom" onclick="zoomControls.zoomIn()">Zoom In</button>
+		<button class="button-zoom" onclick="zoomControls.zoomOut()">Zoom Out</button>
+		<button class="button-zoom" onclick="zoomControls.zoomReset()">Reset</button>
+	</div>
+
+	<script src="../dist/mapaES.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>
