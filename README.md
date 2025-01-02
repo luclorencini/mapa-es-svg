@@ -1,6 +1,8 @@
-# mapaEs - Manipulação de Mapa SVG do estado do Espírito Santo
+# mapaEs - Mapa Iterativo do Espírito Santo
 
 Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterativo.
+
+Link para demonstração: https://luclorencini.github.io.
 
 #### Funcionalidades principais
 
@@ -28,7 +30,7 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 A melhor forma de inserir um SVG na página de forma a poder manipulá-lo é carregando-o com `fetch` e inserir no DOM. Ao fazer isso, as tags internas do SVG passam a fazer parte do DOM, o que nos permite manipulá-los com css e javascript
 
 ```javascript
-const response = await fetch('../dist/mapa-es.svg');
+const response = await fetch('path/to/mapaEs.svg');
 const svgContent = await response.text();
 
 const container = document.querySelector('#map-holder');
@@ -131,11 +133,15 @@ mapaEs.tracados.forEach(t => {
 
 ## Sobre os arquivos
 
-### mapa-es.svg
+### mapaEs.js
 
-O arquivo **`mapa-es.svg`** representa o mapa do estado do Espírito Santo, Brasil, e contém todos os 78 municípios do estado. 
+O arquivo **mapaEs.js** define objeto `mapaEs`, que encapsula funcionalidades para manipular o arquivo `mapaEs.svg` descrito abaixo. Ele permite interagir com os elementos SVG, manipulando suas cores, visibilidade e estilos, além de configurar eventos de interação, como o destaque de municípios ao passar o mouse. Toda a documentação acima se refere a este objeto.
 
-O formato adotado é o SVG (Scalable Vector Graphics), baseado em XML e usado para criar gráficos vetoriais bidimensionais. Ao contrário de formatos de imagem como JPEG ou PNG, que são compostos por pixels, os gráficos SVG são compostos por linhas, curvas, formas e texto, o que permite que eles sejam escalados sem perder qualidade. SVG suporta animações e interatividade, podendo ser manipulados com JavaScript e CSS, o torna ideal para gráficos interativos em aplicações web. A maioria dos navegadores modernos oferece suporte completo para SVG, permitindo renderizar gráficos vetoriais diretamente em páginas da web.
+### mapaEs.svg
+
+O arquivo `mapaEs.svg` representa o mapa do estado do Espírito Santo, Brasil, e contém todos os 78 municípios do estado. 
+
+O formato adotado é o SVG (Scalable Vector Graphics) usado para criar gráficos vetoriais bidimensionais e, por isso, podem ser escalados sem perder qualidade. Arquivos SVG podem ser manipulados com JavaScript e CSS e são compatíveis com todos os navegadores modernos, o que os torna ideal para gráficos interativos em aplicações web.
 
 O mapa é formado por dois principais conjuntos de elementos:
 
@@ -155,8 +161,8 @@ O mapa é formado por dois principais conjuntos de elementos:
 
 ```xml
 <g id="tracados">
-  <path id="3205309" d="M10,10 L20,20 ..."/>
-  <path id="3205200" d="M30,30 L40,40 ..."/>
+  <path id="3205309" d="M354.948,551.208 ..."/>
+  <path id="3205200" d="M327.611,589.155 ..."/>
   <!-- Outros elementos path para os municípios -->
 </g>
 ```
@@ -165,18 +171,21 @@ O mapa é formado por dois principais conjuntos de elementos:
 
 ```xml
 <g id="nomes">
-  <text id="3205309" x="15" y="15">Vitória</text>
+  <text id="3205309" x="364.77815" y="545.33657">Vitória</text>
   <g id="3205200">
-    <text x="15" y="15">Vila</text>
-    <text x="17" y="18">Velha</text>
+    <text x="349.91283" y="575.33916">Vila</text>
+    <text x="346.20913" y="585.92117">Velha</text>
   </g>  
   <!-- Outros elementos text para os nomes dos municípios -->
 </g>
 ```
 
-### mapaEs.js
+O tamanho padrão do SVG do **mapaEs.svg** é:
 
-O arquivo **mapaEs.js** define objeto `mapaEs`, que encapsula funcionalidades para manipular o arquivo `mapa-es.svg`. Ele permite interagir com os elementos SVG, manipulando suas cores, visibilidade e estilos, além de configurar eventos de interação, como o destaque de municípios ao passar o mouse.
+```
+height="790px"
+width="540px"
+```
 
 ## Contribuição
 

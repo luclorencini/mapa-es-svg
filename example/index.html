@@ -3,39 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Interativo - Espírito Santo</title>
+    <title>mapaEs - Mapa Interativo - Espírito Santo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>Mapa Interativo do Espírito Santo</h1>
+	<h1>mapaEs - Mapa Interativo do Espírito Santo</h1>
 	<div class="tela-dividida">
 		<div class="map-container">
 			<div id="map-holder"></div>
 		</div>
 		<div class="info-container">
 
-			<div>Implementado usando imagem SVG. Você pode manipular cada município com CSS e Javascript, da mesma forma que qualquer outro elemento no DOM.</div>
-			<div>Como se trata de imagem vetorial, você pode dar zoom ou aumentar o mapa sem perder qualidade no traçado ou nos nomes.</div>
+			<p>Fontes e documentação completa em:</p>
+
+			<div>Github: <a href="https://github.com/luclorencini/mapa-es-svg">https://github.com/luclorencini/mapa-es-svg</a></div>
 
 			<div>
-				<h4>Eventos tratados neste exemplo:</h4>
-				<ul>
-					<li>
-						<strong>mouseover</strong>: ao passar o mouse, faz o município aparecer com uma cor de fundo de destaque, enquanto guarda a cor original.
-					</li>
-					<li>
-						<strong>mouseout</strong>: ao tirar o mouse, faz o município retornar para sua cor original, salva em 'mouseover'.
-					</li>
-					<li>
-						<strong>mouseout</strong>: ao clicar, exibe alerta com nome e código IBGE do município.
-					</li>
-				</ul>
-			</div>
+				<h4>Customizações feitas neste exemplo</h4>
 
-			<div>
-				<h4>Customizações</h4>
-
-				<p>Através de CSS e Javascript, você pode realizar várias customizações. Clique nos botões abaixo para ver exemplos:</p>
+				<p>Através de CSS e Javascript, você pode realizar várias customizações. Por exemplo, ao clicar, exibe alerta com nome e código IBGE do município.</p>
+					
+				<p>Clique nos botões abaixo para ver exemplos:</p>
 
 				<button class="button-action" onclick="destacarGrandeVitoriaInterior()">Destacar Grande Vitória e Interior</button>
 				<button class="button-action" onclick="customizarColatina()">Customizar Colatina</button>
