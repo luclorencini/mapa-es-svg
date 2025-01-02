@@ -2,7 +2,7 @@
 
 Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterativo.
 
-Link para demonstração: https://luclorencini.github.io.
+Link para demonstração: https://luclorencini.github.io/mapa-es-svg
 
 #### Funcionalidades principais
 

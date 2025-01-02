@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Ao fazer isso, as tags internas do svg passam a fazer parte do DOM,
     //  o que nos permite manipulá-los com css e javascript.
 
-    const response = await fetch('../dist/mapaEs.svg');
+    const response = await fetch('/dist/mapaEs.svg');
     const svgContent = await response.text();
 
     const container = document.querySelector('#map-holder');
