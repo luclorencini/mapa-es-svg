@@ -4,15 +4,14 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 
 ### Link para demonstração: https://luclorencini.github.io
 
+![Logo do Projeto](assets/mapa-exemplo.png)
+
 #### Funcionalidades principais
 
 - Inicialização do mapa SVG com eventos de hover e interação.
 - Manipulação dos traçados dos municípios, incluindo alteração de cor e visibilidade.
 - Manipulação dos nomes dos municípios, incluindo alteração de cor, estilo (negrito) e visibilidade.
 - Eventos interativos para destacar municípios ao passar o mouse.
-
-
-<!--![Logo do Projeto](assets/mapa-exemplo.png)-->
 
 ## Índice
 
