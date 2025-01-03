@@ -1,6 +1,10 @@
+/*!
+ * Copyright (c) 2024 - Luciano Lorencini - disponível em: https://github.com/luclorencini/mapa-es-svg
+ * Licenciado sob a Licença MIT. Consulte o arquivo LICENSE para mais detalhes.
+ */
+
 /**
- * Autor: Luciano Lorencini - disponível em: https://github.com/luclorencini/mapa-es-svg
- * Objeto responsável pela manipulação de um arquivo SVG contendo o mapa do Espírito Santo.
+  * Objeto responsável pela manipulação de um arquivo SVG contendo o mapa do Espírito Santo.
  * Este objeto encapsula funcionalidades para interagir com os elementos SVG, como os traçados dos municípios 
  * e seus respectivos nomes. Ele permite manipular visualmente o mapa, como alterar cores, esconder/exibir municípios 
  * e modificar os estilos dos nomes dos municípios, além de lidar com eventos de interação, como hover.
