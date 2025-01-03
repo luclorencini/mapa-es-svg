@@ -1,4 +1,4 @@
-# mapaEs - Mapa Iterativo do Espírito Santo
+# mapaEs.js - Mapa Iterativo do Espírito Santo
 
 Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterativo.
 
@@ -87,7 +87,7 @@ mapaEs.setAllNomes("#ff00ff", true);  // Altera a cor de todos os nomes para rox
 
 ### Eventos
 
-Por padrão, o `mapaES` já configura os eventos de `mouseover` e `mouseout` em cada município para criar o efeito de hover ao passar o mouse sobre um município do mapa. Você pode alterar a cor padrão de hover através do método `init()`.
+Por padrão, o `mapaES.js` já configura os eventos de `mouseover` e `mouseout` em cada município para criar o efeito de hover ao passar o mouse sobre um município do mapa. Você pode alterar a cor padrão de hover através do método `init()`.
 
 Você pode configurar demais eventos se desejar. O código abaixo demonstra como configurar `click` para todos traçados de município:
 
