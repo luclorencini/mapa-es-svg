@@ -7,10 +7,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>mapaEs.js - Mapa Interativo do Espírito Santo</h1>
+	<div class="topbar">mapaEs.js - Mapa Interativo do Espírito Santo</div>
 	<div class="tela-dividida">
 		<div class="map-container">
 			<div id="map-holder"></div>
+			<div class="map-tip">
+				<div><strong>Dica:</strong></div>
+				<div>Arraste o mapa para movimentá-lo</div>
+				<div>Use a roda do mouse para dar zoom</div>				
+			</div>
+			<div class="aviso-mobile">
+				<div>Para ver as opções de customização,</div>
+				<div>acesse via um computador.</div>
+			</div>
 		</div>
 		<div class="info-container">
 			
@@ -41,9 +50,9 @@
 	</div>
 
 	<div class="zoom-controls">
-		<button class="button-zoom" onclick="zoomControls.zoomIn()">Zoom In</button>
-		<button class="button-zoom" onclick="zoomControls.zoomOut()">Zoom Out</button>
-		<button class="button-zoom" onclick="zoomControls.zoomReset()">Reset</button>
+		<button class="button-zoom" id="zoomInButton">Zoom In</button>
+		<button class="button-zoom" id="zoomOutButton">Zoom Out</button>
+		<button class="button-zoom" id="resetButton">Reset</button>
 	</div>
 
 	<script src="../dist/mapaEs.js"></script>

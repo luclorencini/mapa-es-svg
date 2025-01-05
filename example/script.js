@@ -66,6 +66,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     //inicializa o mapaEs para facilitar o uso do mapa
     mapaEs.init(svgElement);
+
+    //lógica de arrastar (pan and zoom)
+    PanAndZoomControls.init(container, svgElement);
     
     //Click: mostra um alerta contendo o nome e o código IBGE do município
     mapaEs.tracados.forEach(t => {
@@ -74,45 +77,105 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert(`${munObj.codigoIbge} - ${munObj.nome}`);
         });
     });    
-
-    zoomControls.init();
 });
 
-//extra - controle de zoom
+//extra - controle de movimento (pan) e zoom
 
-const zoomControls = {
+const PanAndZoomControls = {
 
+    isPanning: false,
+    startX: '',
+    startY: '',
+    panX: 0,
+    panY: 0,
     scale: 1,
-    margin: 0,
-    mapa: null,
 
-    init() {
-        this.mapa = document.querySelector('svg');
+    container: null,
+    svg: null,
+
+    resetButton: null,
+    zoomInButton: null,
+    zoomOutButton: null,
+
+    init(container, svg) {
+
+        this.container = container;
+        this.svg = svg;
+
+        this.resetButton = document.querySelector('#resetButton');
+        this.zoomInButton = document.querySelector('#zoomInButton');
+        this.zoomOutButton = document.querySelector('#zoomOutButton');
+
+        this.configPanAndZoom();
     },
 
-    zoomIn() {
-        this.scale += 0.2;
-        this.margin += 75;
-        this.applyZoom();
+    configPanAndZoom() {
+
+        this.container.addEventListener('mouseover', () => {
+            if (this.isPanning) return;
+            this.container.style.cursor = 'pointer';
+        });
+
+        this.container.addEventListener('mousedown', (e) => {
+            this.isPanning = true;
+            this.startX = e.clientX - this.panX;
+            this.startY = e.clientY - this.panY;
+            this.container.style.cursor = 'move';
+        });
+
+        this.container.addEventListener('mousemove', (e) => {
+            if (!this.isPanning) return;
+            this.panX = e.clientX - this.startX;
+            this.panY = e.clientY - this.startY;
+            this.updateTransform();
+        });
+
+        this.container.addEventListener('mouseup', () => {
+            this.isPanning = false;
+            this.container.style.cursor = 'grab';
+        });
+
+        this.container.addEventListener('mouseleave', () => {
+            this.isPanning = false;
+            this.container.style.cursor = 'pointer';
+        });
+
+        this.container.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const scaleAmount = 0.1;
+            if (e.deltaY < 0) {
+                this.scale += scaleAmount;
+            } else {
+                this.scale -= scaleAmount;
+            }
+            this.scale = Math.min(Math.max(0.5, this.scale), 3); // Limitar o zoom entre 0.5x e 3x
+            this.updateTransform();
+        });
+
+        this.resetButton.addEventListener('click', () => {
+            this.panX = 0;
+            this.panY = 0;
+            this.scale = 1;
+            this.updateTransform();
+        });
+
+        this.zoomInButton.addEventListener('click', () => {
+            this.scale = Math.min(this.scale + 0.1, 3); // Limitar o zoom máximo a 3x
+            this.updateTransform();
+        });
+
+        this.zoomOutButton.addEventListener('click', () => {
+            this.scale = Math.max(this.scale - 0.1, 0.5); // Limitar o zoom mínimo a 0.5x
+            this.updateTransform();
+        });
+
     },
 
-    zoomOut() {
-        this.scale -= 0.2;
-        this.margin -= 75;
-        this.applyZoom();
-    },
-
-    zoomReset() {
-        this.scale = 1;
-        this.margin = 0;
-        this.applyZoom();
-    },
-
-    applyZoom() {
-        this.mapa.style.transform = `scale(${this.scale})`;
-        this.mapa.style.marginTop = `${this.margin}px`;
+    updateTransform() {
+        this.svg.style.transform = `translate(${this.panX}px, ${this.panY}px) scale(${this.scale})`;
     }
 }
+
 
 // Array contendo todos os 78 municípios capixabas, usando o código IBGE como identificador
 const municipioData = [

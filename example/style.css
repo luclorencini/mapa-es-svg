@@ -6,53 +6,104 @@ body {
     overflow-y: hidden;
 }
 
-h1 {
-    border-bottom: 1px solid gray;
-    margin-bottom: 0;
-    height: 3rem;
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    background-color: #283593;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    border-bottom: 1px solid #78909c;
 }
 
 .tela-dividida {
     display: flex;
     justify-content: space-between;
     height: calc(100vh - 4rem);
-}
 
-& .map-container {
-    width: 100vw;
-    margin-left: auto;
-    margin-right: auto;
-    overflow-y: scroll;
-    position: relative;
-}
+    .map-container {
+        height: calc(100vh - 65px);
+        width: 100vw;
+        text-align: center;
+        border-right: 1px solid #78909c;
+        background-color: #fff;
+        overflow: hidden;
+        position: relative;
+        background-color: #eceff1;
 
-& .info-container {
-    width: 30rem;
-    padding: 10px;
-    margin: 0;
-}
+        svg {
+            width: 94vw;
+            height: 94vh;
 
-&& .destaque {
-    background-color: #fff59d;
-    padding: 5px 0px; 
-    margin: -10px;
+            #nomes text {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                user-select: none;
+            }
+        }
+
+        .map-tip {
+            position: absolute;
+            top: 43px;
+            left: 8px;
+            text-align: left;
+            font-size: 14px;
+            padding: 10px;
+            background-color: #f9fbe7;
+            border: 1px solid #78909c;
+            border-radius: 5px;
+        }
+
+        .aviso-mobile {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 3.5rem;
+            background-color: #f9fbe7;
+            border-top: 1px solid #78909c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .info-container {
+        width: 30rem;
+        padding: 10px;
+        margin: 0;
+
+        .destaque {
+            background-color: #fff59d;
+            padding: 5px 0px;
+            margin: -10px;
+        }
+    }
 }
 
 /* Controles de zoom */
 
 .zoom-controls {
     position: fixed;
-    top: 72px;
-    left: 2px;
-}
+    top: 70px;
+    left: 0px;
+    padding-left: 7px;
 
-.button-zoom {
-    padding: 7px;
-    font-weight: bold;
-    font-size: 1rem;
-    background-color: #616161;
-    color: white;
-    border: none;
+    .button-zoom {
+        padding: 7px;
+        font-weight: bold;
+        font-size: 1rem;
+        background-color: #616161;
+        color: white;
+        border: none;
+        border-radius: 3px;
+    }
+
+    .button-zoom:hover {
+        opacity: 0.9;
+    }
 }
 
 /* Botões de ação */
@@ -66,19 +117,33 @@ h1 {
     font-size: 1rem;
     background-color: #3f51b5;
     color: white;
-    border: none;
+    border: none;        
 }
 
-& .button-reset {
+.button-action.button-reset {
     background-color: #d32f2f;
 }
 
-/* Customização inicial do mapa svg */
-
-svg #tracados path {
-    cursor: pointer;
+.button-action:hover {
+    opacity: 0.9;
 }
 
-svg #nomes text {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* ajustes para mobile */
+
+@media (max-width: 768px) {
+
+    .topbar {
+        font-size: 1.25rem;
+    }
+
+    .info-container {
+        display: none;
+    }    
+}
+
+@media (min-width: 769px) {
+
+    .aviso-mobile {
+        display: none !important;
+    }
 }
