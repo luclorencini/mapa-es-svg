@@ -16,7 +16,7 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 ## Índice
 
 - [Exemplos de Uso](#exemplos-de-uso)
-- [Documentação](#documentacao)
+- [Documentação](#documentação)
 - [Sobre os arquivos](#sobre-os-arquivos)
 - [Contribuição](#contribuição)
 - [Licença](#licença)
@@ -108,13 +108,14 @@ mapaEs.tracados.forEach(t => {
 | `tracados`   | `NodeListOf<SVGPathElement>`             | Lista de todos os elementos `path` que representam os traçados dos municípios. |
 | `nomes`      | `NodeListOf<SVGTextElement \| SVGGElement>` | Lista de todos os elementos de texto (`text` ou `group`) que representam os nomes dos municípios. |
 | `svgElement` | `SVGSVGElement`                          | O elemento SVG que contém o mapa do Espírito Santo.                       |
-| `corHover`   | `string`                                 | Cor de destaque usada para o efeito de hover nos traçados dos municípios. O valor padrão é `"#fff59d"`. |
 
 ### Métodos
 
+Nota: todos os parâmetros marcados como opcionais serão ignorados se você informar `null` ou `undefined`.
+
 | Método                | Descrição                                                                 | Parâmetros                                        | Retorno    |
 |-----------------------|---------------------------------------------------------------------------|--------------------------------------------------|------------|
-| `init(svgElement, corHover)`  | Inicializa o manipulador do mapa SVG, configurando os elementos e eventos de interação. | `svgElement` (SVGSVGElement) - O elemento SVG que contém o mapa.<br> `corHover` (string) - Cor de hover (opcional). | `void`     |
+| `init(svgElement)`  | Inicializa o manipulador do mapa SVG, configurando os elementos e eventos de interação. | `svgElement` (SVGSVGElement) - O elemento SVG que contém o mapa. | `void`     |
 | `getTracado(codigoIbge)`      | Obtém o traçado (elemento `path`) de um município a partir do código IBGE. | `codigoIbge` (string) - Código IBGE do município. | `SVGPathElement \| null` |
 | `setTracado(codigoIbge, corFill, corStroke)` | Define as cores de preenchimento (`fill`) e borda (`stroke`) de um traçado de município. | `codigoIbge` (string) - Código IBGE do município.<br> `corFill` (string) - Cor de preenchimento (opcional).<br> `corStroke` (string) - Cor da borda (opcional). | `void` |
 | `setAllTracados(corFill, corStroke)` | Define as cores de preenchimento e borda para todos os traçados dos municípios. | `corFill` (string) - Cor de preenchimento.<br> `corStroke` (string) - Cor da borda. | `void` |
@@ -123,12 +124,14 @@ mapaEs.tracados.forEach(t => {
 | `showTracado(codigoIbge)` | Exibe o traçado de um município a partir do código IBGE. | `codigoIbge` (string) - Código IBGE do município. | `void` |
 | `showAllTracados()` | Exibe todos os traçados dos municípios. | - | `void` |
 | `getNome(codigoIbge)` | Obtém o nome (elemento `text` ou `group`) de um município a partir do código IBGE. | `codigoIbge` (string) - Código IBGE do município. | `SVGTextElement \| SVGGElement \| null` |
-| `setNome(codigoIbge, corHex, isNegrito)` | Define a cor e o estilo de texto (negrito) de um nome de município. | `codigoIbge` (string) - Código IBGE do município.<br> `corHex` (string) - Cor hexadecimal a ser aplicada.<br> `isNegrito` (boolean) - Define se o nome será em negrito. | `void` |
+| `setNome(codigoIbge, corHex, isNegrito)` | Define a cor e o estilo de texto (negrito) de um nome de município. | `codigoIbge` (string) - Código IBGE do município.<br> `corHex` (string) - Cor hexadecimal a ser aplicada (opcional).<br> `isNegrito` (boolean) - Define se o nome será em negrito (opcional). | `void` |
 | `setAllNomes(corHex, isNegrito)` | Define a cor e o estilo de texto (negrito) para todos os nomes dos municípios. | `corHex` (string) - Cor hexadecimal a ser aplicada.<br> `isNegrito` (boolean) - Define se os nomes serão em negrito. | `void` |
 | `hideNome(codigoIbge)` | Esconde o nome de um município a partir do código IBGE. | `codigoIbge` (string) - Código IBGE do município. | `void` |
 | `hideAllNomes()` | Esconde todos os nomes dos municípios. | - | `void` |
 | `showNome(codigoIbge)` | Exibe o nome de um município a partir do código IBGE. | `codigoIbge` (string) - Código IBGE do município. | `void` |
 | `showAllNomes()` | Exibe todos os nomes dos municípios. | - | `void` |
+| `setHover(codigoIbge, corFill, corStroke, corName)` | Define as cores de preenchimento, borda e nome de um município **ao passar o mouse sobre seu traçado**.<br> Ao tirar o cursor do mouse sobre o município, ele retorna às cores definidas anteriormente. | `codigoIbge` (string) - Código IBGE do município.<br> `corFill` (string) - Cor de preenchimento do traçado (opcional).<br> `corStroke` (string) - Cor da borda do traçado (opcional).<br> `corName` (string) - Cor do nome do município (opcional). | `void` |
+| `setAllHover(corFill, corStroke, corName)` | Define as cores de preenchimento, borda e texto de um município para todos os traçados dos municípios **ao passar o mouse sobre eles.** | `corFill` (string) - Cor de preenchimento (opcional).<br> `corStroke` (string) - Cor da borda (opcional).<br> `corName` (string) - Cor do nome (opcional). | `void` |
 
 ## Sobre os arquivos
 

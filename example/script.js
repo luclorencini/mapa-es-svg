@@ -17,6 +17,7 @@ function destacarGrandeVitoriaInterior() {
 
     municipiosGV.forEach(cod => {
         mapaEs.setTracado(cod, "#bbdefb");
+        mapaEs.setHover(cod, '#2196f3', '#1565c0', '#ffffff');
     });
 }
 
@@ -49,6 +50,8 @@ function customizarCachoeiro() {
 
 //----------------------------------------------
 
+// setup
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     // Esta é a melhor forma de inserir um SVG na página de forma a poder manipulá-lo.
@@ -66,6 +69,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     //inicializa o mapaEs para facilitar o uso do mapa
     mapaEs.init(svgElement);
+
+    // Configura eventos de hover dos traçados dos municípios (amarelo com contorno vermelho e letra verde)
+    //mapaEs.setAllHover('lightyellow', 'red', 'darkgreen');
+    mapaEs.setHover('3205002','lightyellow', 'red', 'darkgreen');
 
     //lógica de arrastar (pan and zoom)
     PanAndZoomControls.init(container, svgElement);

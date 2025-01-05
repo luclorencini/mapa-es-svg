@@ -37,17 +37,10 @@ const mapaEs = {
     svgElement: null,
 
     /**
-     * Cor de destaque para o efeito de hover.
-     * @type {string}
-     */
-    corHover: "#fff59d",
-
-    /**
      * Inicializa o manipulador do mapa SVG, configurando os elementos e eventos de interação.
      * @param {SVGSVGElement} svgElement - O elemento SVG que contém o mapa dos municípios.
-     * @param {string} [corHover="#fff59d"] - A cor a ser usada para o efeito de hover. Se não fornecida, o valor padrão é '#fff59d'.
      */
-    init(svgElement, corHover) {
+    init(svgElement) {
 
         if (!svgElement) {
             console.error('mapaEs - init: elemento SVG não informado');
@@ -61,26 +54,6 @@ const mapaEs = {
 
         // Pega todos os elementos de nomes de municípios, seja um 'text' ou um 'grupo' de textos
         mapaEs.nomes = this.svgElement.querySelectorAll('#nomes > *');
-
-        // Seta cor de hover se informada
-        if (corHover) this.corHover = corHover;
-
-        // Configura eventos de hover dos traçados dos municípios
-        this.tracados.forEach(t => {
-
-            // Mouse over: faz o município aparecer com uma cor de destaque
-            t.addEventListener("mouseover", () => {
-                const originalColor = t.getAttribute("fill");
-                t.setAttribute("fill", this.corHover);
-                t.setAttribute("data-original-color", originalColor);
-            });
-
-            // Mouse out: faz o município retornar para sua cor original
-            t.addEventListener("mouseout", () => {
-                const originalColor = t.getAttribute("data-original-color");
-                t.setAttribute("fill", originalColor);
-            });
-        });
 
         // Ajusta labels dos nomes dos municípios para não atrapalhar o mouseover
         this.nomes.forEach(label => {
@@ -110,6 +83,7 @@ const mapaEs = {
      * @param {string} [corStroke] - A cor da borda do traçado.
      */
     setTracado(codigoIbge, corFill, corStroke) {
+        if (!codigoIbge) return;
         let t = this.getTracado(codigoIbge);
         if (!t) return;
         if (corFill) t.setAttribute("fill", corFill);
@@ -118,8 +92,8 @@ const mapaEs = {
 
     /**
      * Define as cores de preenchimento (fill) e borda (stroke) para todos os traçados dos municípios.
-     * @param {string} corFill - A cor de preenchimento para todos os traçados.
-     * @param {string} corStroke - A cor da borda para todos os traçados.
+     * @param {string} [corFill] - A cor de preenchimento para todos os traçados.
+     * @param {string} [corStroke] - A cor da borda para todos os traçados.
      */
     setAllTracados(corFill, corStroke) {
         mapaEs.tracados.forEach(t => {
@@ -189,30 +163,26 @@ const mapaEs = {
      * @param {boolean} isNegrito - Se verdadeiro, aplica negrito ao nome do município; se falso, retira.
      */
     setNome(codigoIbge, corHex, isNegrito) {
-        const setTextAttrs = (elText, corHex, isNegrito) => {
-            elText.setAttribute("stroke", corHex);
-            elText.setAttribute("fill", corHex);
-            if (isNegrito) {
-                elText.setAttribute("font-weight", "bold");
-            }
-            else {
-                elText.setAttribute("font-weight", "");
-            }
-        }
 
         let nog = this.getNome(codigoIbge);
         if (!nog) return;
 
-        if (nog.tagName == 'text') {
-            setTextAttrs(nog, corHex, isNegrito);
-        }
+        this._executeInNog(
+            (elText, corHex, isNegrito) => {
+                if (corHex) {
+                    elText.setAttribute("fill", corHex);
+                    elText.setAttribute("stroke", corHex);
+                }
 
-        if (nog.tagName == 'g') {
-            let texts = nog.querySelectorAll('text');
-            texts.forEach(t => {
-                setTextAttrs(t, corHex, isNegrito);
-            });
-        }
+                if (isNegrito) {
+                    elText.setAttribute("font-weight", "bold");
+                }
+                else {
+                    elText.setAttribute("font-weight", "");
+                }
+            },
+            nog, corHex, isNegrito
+        );
     },
 
     /**
@@ -221,8 +191,8 @@ const mapaEs = {
      * @param {boolean} isNegrito - Se verdadeiro, aplica negrito a todos os nomes dos municípios; se falso, retira.
      */
     setAllNomes(corHex, isNegrito) {
-        mapaEs.nomes.forEach(n => {
-            this.setNome(n.id, corHex, isNegrito);
+        mapaEs.nomes.forEach(nog => {
+            this.setNome(nog.id, corHex, isNegrito);
         });
     },
 
@@ -264,5 +234,103 @@ const mapaEs = {
         mapaEs.nomes.forEach(n => {
             this.showNome(n.id);
         });
+    },
+
+    /**
+     * Define as cores de preenchimento (fill), borda (stroke) e nome de um município ao passar o mouse sobre seu traçado.
+     * Ao tirar o cursor do mouse sobre o município, ele retorna às cores definidas anteriormente.
+     * @param {string} codigoIbge - O código IBGE do município.
+     * @param {string} [corFill] - A cor de preenchimento do traçado.
+     * @param {string} [corStroke] - A cor da borda do traçado.
+     * @param {string} [corName] - A cor do nome do município.
+     */
+    setHover(codigoIbge, corFill, corStroke, corName) {
+        if (!codigoIbge) return;
+        if (!corFill && !corStroke && !corName) return;
+
+        let t = this.getTracado(codigoIbge);
+        if (!t) return;
+
+        let nog = this.getNome(codigoIbge);
+        if (!nog) return;
+
+        const trataMouseOver = () => {
+            if (corFill) {
+                const originalFill = t.getAttribute("fill");
+                t.setAttribute("fill", corFill);
+                t.setAttribute("data-original-fill", originalFill);
+            }
+            if (corStroke) {
+                const originalStroke = t.getAttribute("stroke");
+                t.setAttribute("stroke", corStroke);
+                t.setAttribute("data-original-stroke", originalStroke);
+            }
+            if (corName) {
+                this._executeInNog(
+                    (elText, corHex) => {
+                        const originalText = elText.getAttribute("fill");
+                        elText.setAttribute("fill", corHex);
+                        elText.setAttribute("stroke", corHex);
+                        elText.setAttribute("data-original-text", originalText);
+                    },
+                    nog, corName
+                );
+            }
+        }
+
+        // Mouse over: faz o município aparecer com uma cor de destaque
+
+        t.removeEventListener("mouseover", trataMouseOver);
+
+        t.addEventListener("mouseover", trataMouseOver);
+
+        // Mouse out: faz o município retornar para sua cor original
+        t.addEventListener("mouseout", () => {
+            if (corFill) {
+                const originalFill = t.getAttribute("data-original-fill");
+                t.setAttribute("fill", originalFill);
+            }
+            if (corStroke) {
+                const originalStroke = t.getAttribute("data-original-stroke");
+                t.setAttribute("stroke", originalStroke);
+            }
+            if (corName) {
+                this._executeInNog(
+                    (elText, corHex) => {
+                        const originalText = elText.getAttribute("data-original-text");
+                        elText.setAttribute("fill", originalText);
+                        elText.setAttribute("stroke", originalText);
+                    },
+                    nog, corName
+                );
+            }
+        });
+    },
+
+    /**
+     * Define as cores de preenchimento, borda e texto de um município para todos os traçados dos municípios ao passar o mouse sobre eles.
+     * @param {string} [corFill] - A cor de preenchimento para todos os traçados.
+     * @param {string} [corStroke] - A cor da borda para todos os traçados.
+     * @param {string} [corName] - A cor do nome do município para todos os traçados.
+     */
+    setAllHover(corFill, corStroke, corName) {
+        mapaEs.tracados.forEach(t => {
+            this.setHover(t.id, corFill, corStroke, corName);
+        });
+    },
+
+    _executeInNog(metodo, nog, ...params) {
+
+        // Verifica o tipo de tag do elemento 'nog' (nome <text> ou grupo <g>)
+        if (nog.tagName == 'text') {
+            metodo(nog, ...params);  // Chama o método com os parâmetros fornecidos
+        }
+
+        if (nog.tagName == 'g') {
+            let texts = nog.querySelectorAll('text');
+            texts.forEach(t => {
+                metodo(t, ...params);  // Chama o método para cada filho 'text' dentro de 'g'
+            });
+        }
     },
 };
