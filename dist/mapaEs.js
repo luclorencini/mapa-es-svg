@@ -243,18 +243,19 @@ const mapaEs = {
      * @param {string} [corFill] - A cor de preenchimento do traçado.
      * @param {string} [corStroke] - A cor da borda do traçado.
      * @param {string} [corName] - A cor do nome do município.
-     */
+     */    
     setHover(codigoIbge, corFill, corStroke, corName) {
         if (!codigoIbge) return;
         if (!corFill && !corStroke && !corName) return;
-
+    
         let t = this.getTracado(codigoIbge);
         if (!t) return;
-
+    
         let nog = this.getNome(codigoIbge);
         if (!nog) return;
-
-        const trataMouseOver = () => {
+    
+        // Funções para mouseover e mouseout, com escopo correto
+        const handleMouseOver = () => {
             if (corFill) {
                 const originalFill = t.getAttribute("fill");
                 t.setAttribute("fill", corFill);
@@ -276,16 +277,9 @@ const mapaEs = {
                     nog, corName
                 );
             }
-        }
-
-        // Mouse over: faz o município aparecer com uma cor de destaque
-
-        t.removeEventListener("mouseover", trataMouseOver);
-
-        t.addEventListener("mouseover", trataMouseOver);
-
-        // Mouse out: faz o município retornar para sua cor original
-        t.addEventListener("mouseout", () => {
+        };
+    
+        const handleMouseOut = () => {
             if (corFill) {
                 const originalFill = t.getAttribute("data-original-fill");
                 t.setAttribute("fill", originalFill);
@@ -304,9 +298,27 @@ const mapaEs = {
                     nog, corName
                 );
             }
-        });
+        };
+    
+        // Verifica se o elemento já possui listeners registrados
+        if (!this.eventHandlers) {
+            this.eventHandlers = {};
+        }
+    
+        // Se já houver handlers registrados, remova-os antes de adicionar novos
+        if (this.eventHandlers[codigoIbge]) {
+            t.removeEventListener("mouseover", this.eventHandlers[codigoIbge].mouseover);
+            t.removeEventListener("mouseout", this.eventHandlers[codigoIbge].mouseout);
+        }
+    
+        // Registra os novos handlers
+        t.addEventListener("mouseover", handleMouseOver);
+        t.addEventListener("mouseout", handleMouseOut);
+    
+        // Armazena os handlers no objeto para garantir que a mesma referência seja usada
+        this.eventHandlers[codigoIbge] = { mouseover: handleMouseOver, mouseout: handleMouseOut };
     },
-
+    
     /**
      * Define as cores de preenchimento, borda e texto de um município para todos os traçados dos municípios ao passar o mouse sobre eles.
      * @param {string} [corFill] - A cor de preenchimento para todos os traçados.

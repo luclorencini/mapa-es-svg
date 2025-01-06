@@ -71,8 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     mapaEs.init(svgElement);
 
     // Configura eventos de hover dos traçados dos municípios (amarelo com contorno vermelho e letra verde)
-    //mapaEs.setAllHover('lightyellow', 'red', 'darkgreen');
-    mapaEs.setHover('3205002','lightyellow', 'red', 'darkgreen');
+    mapaEs.setAllHover('lightyellow', 'red', 'darkgreen');
 
     //lógica de arrastar (pan and zoom)
     PanAndZoomControls.init(container, svgElement);
