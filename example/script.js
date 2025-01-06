@@ -3,7 +3,7 @@
 
 function destacarGrandeVitoriaInterior() {
 
-    mapaEs.setAllTracados('#f0f4c3', '#9fa8da');
+    mapaEs.setAllTracados('#e8f5e9', '#757575');  // MDC GREEN 50, GRAY 600
 
     const municipiosGV = [
         '3201308', //cariacica
@@ -16,8 +16,8 @@ function destacarGrandeVitoriaInterior() {
     ];
 
     municipiosGV.forEach(cod => {
-        mapaEs.setTracado(cod, "#bbdefb");
-        mapaEs.setHover(cod, '#2196f3', '#1565c0', '#ffffff');
+        mapaEs.setTracado(cod, "#bbdefb"); //MDC BLUE 100
+        mapaEs.setHover(cod, '#64b5f6', '#1565c0', '#212121'); //MDC BLUE 300, BLUE 800, GREY 900
     });
 }
 
@@ -39,13 +39,13 @@ function exibirApenasLinhares() {
 }
 
 function customizarColatina() {
-    mapaEs.setTracado('3201506', "#a5d6a7");
-    mapaEs.setNome('3201506', '#bf360c');
+    mapaEs.setTracado('3201506', "#a5d6a7"); //MDC GREEN 200
+    mapaEs.setNome('3201506', '#d32f2f'); //MDC RED 700
 }
 
 function customizarCachoeiro() {
-    mapaEs.setTracado('3201209', '#b39ddb', 'black');
-    mapaEs.setNome('3201209', '#ffee58', true);
+    mapaEs.setTracado('3201209', '#b39ddb', 'black'); //MDC DEEP PURPLE 200
+    mapaEs.setNome('3201209', '#ffee58', true); //MDC YELLOW 400
 }
 
 //----------------------------------------------
@@ -70,8 +70,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     //inicializa o mapaEs para facilitar o uso do mapa
     mapaEs.init(svgElement);
 
-    // Configura eventos de hover dos traçados dos municípios (amarelo com contorno vermelho e letra verde)
-    mapaEs.setAllHover('lightyellow', 'red', 'darkgreen');
+    // Configura eventos de hover dos traçados dos municípios
+    mapaEs.setAllHover('#fff9c4', null, '#1b5e20'); //MDC YELLOW 100, null, GREEN 900
 
     //lógica de arrastar (pan and zoom)
     PanAndZoomControls.init(container, svgElement);

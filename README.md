@@ -20,6 +20,7 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 - [Sobre os arquivos](#sobre-os-arquivos)
 - [Contribuição](#contribuição)
 - [Licença](#licença)
+- [Próximos Passos](#próximos-passos)
 - [Contato](#contato)
 
 ## Exemplos de Uso
@@ -40,6 +41,9 @@ O código acima realiza o seguinte processo:
  - Usa o `fetch` para buscar o arquivo SVG.
  - Converte o conteúdo da resposta para texto com `response.text()`.
  - Localiza a `<div>` com o id `#map-holder` e insere o conteúdo SVG diretamente dentro dela com `container.innerHTML = svgContent`.
+
+> **Importante**: O uso de `fetch` não funciona em arquivos locais no sistema de arquivos. Para executar este exemplo, recomendamos o uso do Visual Studio Code com o plug-in **Live Server**, permitindo que você execute o código via `localhost`.
+
 
 ### Inicializando o mapa
 
@@ -85,11 +89,32 @@ mapaEs.setAllTracados("#00ff00", "#000000");  // Altera a cor de preenchimento e
 mapaEs.setAllNomes("#ff00ff", true);  // Altera a cor de todos os nomes para roxo e aplica negrito
 ```
 
+### Alterando as cores de um município ao passar o mouse sobre ele
+
+Você pode definir a cor do traçado, da borda e do nome de um município ao passar o mouse sobre ele (efeito de hover):
+```javascript
+const 
+const corFill = '#3498db';   // Cor de preenchimento para todos
+const corStroke = '#2980b9'; // Cor da borda para todos
+const corName = '#2c3e50';   // Cor do nome para todos
+
+mapaEs.setHover('3204906', corFill, corStroke, corName); // Aplica o efeito hover ao passar o mouse sobre o município com o código IBGE 3204906 (São Mateus)
+```
+### Alterando as cores de todos os municípios ao passar o mouse sobre qualquer um deles
+
+Você pode definir as cores de hover para todos os municípios de uma vez. Vale ressaltar que, caso não deseje alterar um determinado atributo, basta informar `null` ou `undefined` para esse atributo, e ele será ignorado.
+
+```javascript
+const corFill = '#3498db';   // Cor de preenchimento para todos
+const corStroke = null;      // Não iremos alterar a cor da borda 
+const corName = '#2c3e50';   // Cor do nome para todos
+
+setAllHover(corFill, corStroke, corName); // Aplica o efeito hover em todos os municípios
+```
+
 ### Eventos
 
-Por padrão, o `mapaES.js` já configura os eventos de `mouseover` e `mouseout` em cada município para criar o efeito de hover ao passar o mouse sobre um município do mapa. Você pode alterar a cor padrão de hover através do método `init()`.
-
-Você pode configurar demais eventos se desejar. O código abaixo demonstra como configurar `click` para todos traçados de município:
+Você pode configurar eventos nos municípios contidos no atributo `tracados`. O código abaixo demonstra como configurar `click` para todos os traçados de município:
 
 ```javascript
 mapaEs.tracados.forEach(t => {
@@ -196,6 +221,10 @@ Se você encontrar problemas ou quiser melhorar o código, sinta-se à vontade p
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE) - veja o arquivo `LICENSE` para mais detalhes.
+
+## Próximos Passos
+
+Existe a vontade de inserir mapas de mais estados brasileiros na biblioteca. Se você tiver interesse no uso, mas seu estado não está contemplado, entre em contato que iremos inseri-lo sob demanda.
 
 ## Contato
 
