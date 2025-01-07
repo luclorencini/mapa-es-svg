@@ -107,7 +107,6 @@ mapaSvg.setAllNomes("#ff00ff", true);  // Altera a cor de todos os nomes para ro
 
 Você pode definir a cor do traçado, da borda e do nome de um município ao passar o mouse sobre ele (efeito de hover):
 ```javascript
-const 
 const corFill = '#3498db';   // Cor de preenchimento para todos
 const corStroke = '#2980b9'; // Cor da borda para todos
 const corName = '#2c3e50';   // Cor do nome para todos
