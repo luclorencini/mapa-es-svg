@@ -4,8 +4,6 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 
 ### Link para demonstração: https://luclorencini.github.io
 
-![Logo do Projeto](assets/mapa-exemplo.png)
-
 #### Funcionalidades principais
 
 - Inicialização do mapa SVG com eventos de hover e interação.
@@ -13,8 +11,11 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 - Manipulação dos nomes dos municípios, incluindo alteração de cor, estilo (negrito) e visibilidade.
 - Eventos interativos para destacar municípios ao passar o mouse.
 
+![Logo do Projeto](assets/mapa-exemplo.png)
+
 ## Índice
 
+- [Download](#download)
 - [Exemplos de Uso](#exemplos-de-uso)
 - [Documentação](#documentação)
 - [Sobre os arquivos](#sobre-os-arquivos)
@@ -22,6 +23,19 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 - [Licença](#licença)
 - [Próximos Passos](#próximos-passos)
 - [Contato](#contato)
+
+## Download
+
+Existem duas maneiras de baixar os arquivos do projeto:
+
+### 1. **Baixar pela página de releases**
+
+Você pode acessar a [Página de Releases](https://github.com/luclorencini/mapa-es-svg/releases/tag/1.0.0) do projeto no GitHub e fazer o download da versão mais recente do projeto. Na página, clique no arquivo desejado para realizar o download.
+
+### 2. **Baixar diretamente da pasta `dist`**
+
+Se preferir, você também pode fazer o download dos arquivos diretamente da pasta `dist` do repositório. Basta acessar o repositório e navegar até a pasta `dist` para obter os arquivos mais recentes.
+
 
 ## Exemplos de Uso
 
