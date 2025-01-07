@@ -1,4 +1,4 @@
-# mapaEs.js - Mapa Iterativo do Espírito Santo
+# mapaSvg.js - Mapa Iterativo do Espírito Santo
 
 Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterativo.
 
@@ -44,7 +44,7 @@ Se preferir, você também pode fazer o download dos arquivos diretamente da pas
 A melhor forma de inserir um SVG na página de forma a poder manipulá-lo é carregando-o com `fetch` e inserir no DOM. Ao fazer isso, as tags internas do SVG passam a fazer parte do DOM, o que nos permite manipulá-los com css e javascript
 
 ```javascript
-const response = await fetch('path/to/mapaEs.svg');
+const response = await fetch('mapa-es.svg');
 const svgContent = await response.text();
 
 const container = document.querySelector('#map-holder');
@@ -65,7 +65,7 @@ Após carregar o SVG, basta agora obtê-lo e chamar o método `init` informando-
 
 ```javascript
 const svgElement = container.querySelector('svg'); // Obtém o SVG do mapa recèm-carregado na página
-mapaEs.init(svgElement);
+mapaSvg.init(svgElement);
 ```
 
 ### Alterando a cor de um município
@@ -73,7 +73,7 @@ mapaEs.init(svgElement);
 Para alterar a cor de um município específico, use o método `setTracado()`, passando o código IBGE do município e as cores desejadas para o preenchimento (`fill`) e a borda (`stroke`).
 
 ```javascript
-mapaEs.setTracado("3205309", "#ff0000", "#000000");  // Altera a cor de preenchimento e borda do município com o código IBGE 3205309 (Vitória)
+mapaSvg.setTracado("3205309", "#ff0000", "#000000");  // Altera a cor de preenchimento e borda do município com o código IBGE 3205309 (Vitória)
 ```
 
 ### Exibindo ou escondendo traçados e nomes
@@ -81,9 +81,9 @@ mapaEs.setTracado("3205309", "#ff0000", "#000000");  // Altera a cor de preenchi
 Você pode exibir ou esconder os traçados e os nomes de um município ou de todos os municípios:
 
 ```javascript
-mapaEs.hideAllTracados();  // Esconde todos os traçados
-mapaEs.showTracado("3203205");  // Exibe o traçado do município com o código IBGE 3203205 (Linhares)
-mapaEs.hideNome("3201506");  // Esconde o nome do município com o código IBGE 3201506 (Colatina)
+mapaSvg.hideAllTracados();  // Esconde todos os traçados
+mapaSvg.showTracado("3203205");  // Exibe o traçado do município com o código IBGE 3203205 (Linhares)
+mapaSvg.hideNome("3201506");  // Esconde o nome do município com o código IBGE 3201506 (Colatina)
 ```
 
 ### Alterando o estilo dos nomes dos municípios
@@ -91,16 +91,16 @@ mapaEs.hideNome("3201506");  // Esconde o nome do município com o código IBGE 
 Você pode alterar a cor e o estilo (negrito) dos nomes dos municípios individualmente ou de todos os municípios:
 
 ```javascript
-mapaEs.setAllNomes("#ff0000", false);  // Altera a cor de todos os nomes para vermelho e remove o negrito
-mapaEs.setNome("3201209", "#0000ff", true);  // Altera a cor para azul e aplica negrito no nome do município com o código IBGE 3201209 (Cachoeiro de Itapemirim)
+mapaSvg.setAllNomes("#ff0000", false);  // Altera a cor de todos os nomes para vermelho e remove o negrito
+mapaSvg.setNome("3201209", "#0000ff", true);  // Altera a cor para azul e aplica negrito no nome do município com o código IBGE 3201209 (Cachoeiro de Itapemirim)
 ```
 
 ### Manipulando todos os traçados e nomes
 
 Você pode alterar as cores de todos os traçados e nomes de uma vez:
 ```javascript
-mapaEs.setAllTracados("#00ff00", "#000000");  // Altera a cor de preenchimento e borda de todos os traçados
-mapaEs.setAllNomes("#ff00ff", true);  // Altera a cor de todos os nomes para roxo e aplica negrito
+mapaSvg.setAllTracados("#00ff00", "#000000");  // Altera a cor de preenchimento e borda de todos os traçados
+mapaSvg.setAllNomes("#ff00ff", true);  // Altera a cor de todos os nomes para roxo e aplica negrito
 ```
 
 ### Alterando as cores de um município ao passar o mouse sobre ele
@@ -112,7 +112,7 @@ const corFill = '#3498db';   // Cor de preenchimento para todos
 const corStroke = '#2980b9'; // Cor da borda para todos
 const corName = '#2c3e50';   // Cor do nome para todos
 
-mapaEs.setHover('3204906', corFill, corStroke, corName); // Aplica o efeito hover ao passar o mouse sobre o município com o código IBGE 3204906 (São Mateus)
+mapaSvg.setHover('3204906', corFill, corStroke, corName); // Aplica o efeito hover ao passar o mouse sobre o município com o código IBGE 3204906 (São Mateus)
 ```
 ### Alterando as cores de todos os municípios ao passar o mouse sobre qualquer um deles
 
@@ -131,7 +131,7 @@ setAllHover(corFill, corStroke, corName); // Aplica o efeito hover em todos os m
 Você pode configurar eventos nos municípios contidos no atributo `tracados`. O código abaixo demonstra como configurar `click` para todos os traçados de município:
 
 ```javascript
-mapaEs.tracados.forEach(t => {
+mapaSvg.tracados.forEach(t => {
   t.addEventListener("click", () => {
     alert(t.id);
   });
@@ -174,28 +174,28 @@ Nota: todos os parâmetros marcados como opcionais serão ignorados se você inf
 
 ## Sobre os arquivos
 
-### mapaEs.js
+### mapaSvg.js
 
-O arquivo **mapaEs.js** define objeto `mapaEs`, que encapsula funcionalidades para manipular o arquivo `mapaEs.svg` descrito abaixo. Ele permite interagir com os elementos SVG, manipulando suas cores, visibilidade e estilos, além de configurar eventos de interação, como o destaque de municípios ao passar o mouse. Toda a documentação acima se refere a este objeto.
+O arquivo **mapaSvg.js** define objeto `mapaSvg`, que encapsula funcionalidades para manipular o arquivo `mapa-es.svg` descrito abaixo. Ele permite interagir com os elementos SVG, manipulando suas cores, visibilidade e estilos, além de configurar eventos de interação, como o destaque de municípios ao passar o mouse. Toda a documentação acima se refere a este objeto.
 
-### mapaEs.svg
+### mapa-es.svg
 
-O arquivo `mapaEs.svg` representa o mapa do estado do Espírito Santo, Brasil, e contém todos os 78 municípios do estado. 
+O arquivo `mapa-es.svg` representa o mapa do estado do Espírito Santo, Brasil, e contém todos os 78 municípios do estado. 
 
 O formato adotado é o SVG (Scalable Vector Graphics) usado para criar gráficos vetoriais bidimensionais e, por isso, podem ser escalados sem perder qualidade. Arquivos SVG podem ser manipulados com JavaScript e CSS e são compatíveis com todos os navegadores modernos, o que os torna ideal para gráficos interativos em aplicações web.
 
 O mapa é formado por dois principais conjuntos de elementos:
 
-**Traçados dos municípios**: Cada município é representado por um elemento `<path>`, e o id de cada `<path>` corresponde ao código IBGE do município. Esse código IBGE é usado para identificar e manipular os traçados individualmente através dos métodos do objeto `mapaEs`, como `getTracado()`, `setTracado()`, e outros relacionados ao controle de traçados.
+**Traçados dos municípios**: Cada município é representado por um elemento `<path>`, e o id de cada `<path>` corresponde ao código IBGE do município. Esse código IBGE é usado para identificar e manipular os traçados individualmente através dos métodos do objeto `mapaSvg`, como `getTracado()`, `setTracado()`, e outros relacionados ao controle de traçados.
 
-**Nomes dos municípios**: Os nomes dos municípios são representados por elementos `<text>` (quando o nome do município cabe em apenas uma linha) ou `<g>` (grupo de textos), quando o nome do município precisa de 2 ou mais linhas dentro do mapa. Neste caso, o grupo contém elementos `<text>` para cada linha de texto. Cada `<text>` ou `<g>` tem um id correspondente ao código IBGE do município, o que permite a manipulação dos nomes dos municípios através dos métodos do objeto `mapaEs`, como `getNome()`, `setNome()`, e outros relacionados à exibição e formatação de nomes.
+**Nomes dos municípios**: Os nomes dos municípios são representados por elementos `<text>` (quando o nome do município cabe em apenas uma linha) ou `<g>` (grupo de textos), quando o nome do município precisa de 2 ou mais linhas dentro do mapa. Neste caso, o grupo contém elementos `<text>` para cada linha de texto. Cada `<text>` ou `<g>` tem um id correspondente ao código IBGE do município, o que permite a manipulação dos nomes dos municípios através dos métodos do objeto `mapaSvg`, como `getNome()`, `setNome()`, e outros relacionados à exibição e formatação de nomes.
 
 #### Estrutura do SVG
 
 - `<svg>`: A tag raiz do arquivo SVG que define o mapa do estado do Espírito Santo. Exemplo:
 
 ```xml
-<svg version="1.1" id="mapaEs" x="0px" y="0px">
+<svg version="1.1" x="0px" y="0px">
 ```
 
 - `<g id="tracados">`: Um grupo de elementos `<path>` que representam os limites dos municípios. Cada `<path>` tem um id correspondente ao código IBGE do município. Exemplo:
@@ -221,7 +221,7 @@ O mapa é formado por dois principais conjuntos de elementos:
 </g>
 ```
 
-O tamanho padrão do SVG do **mapaEs.svg** é:
+O tamanho padrão do SVG do **mapa-es.svg** é:
 
 ```
 height="790px"

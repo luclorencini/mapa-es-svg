@@ -3,7 +3,9 @@
 
 function destacarGrandeVitoriaInterior() {
 
-    mapaEs.setAllTracados('#e8f5e9', '#757575');  // MDC GREEN 50, GRAY 600
+    mapaSvg.setAllTracados('#e8f5e9', '#757575'); // MDC GREEN 50, GRAY 600
+    mapaSvg.setAllHover('#c8e6c9'); // MDC GREEN 100
+    mapaSvg.setAllNomes('#212121'); // MDC GREY 900
 
     const municipiosGV = [
         '3201308', //cariacica
@@ -16,36 +18,38 @@ function destacarGrandeVitoriaInterior() {
     ];
 
     municipiosGV.forEach(cod => {
-        mapaEs.setTracado(cod, "#bbdefb"); //MDC BLUE 100
-        mapaEs.setHover(cod, '#64b5f6', '#1565c0', '#212121'); //MDC BLUE 300, BLUE 800, GREY 900
+        mapaSvg.setTracado(cod, "#bbdefb"); //MDC BLUE 100
+        mapaSvg.setHover(cod, '#64b5f6', '#1565c0', '#212121'); //MDC BLUE 300, BLUE 800, GREY 900
     });
 }
 
 function esconderTodosOsNomes() {
-    mapaEs.hideAllNomes();
+    mapaSvg.hideAllNomes();
 }
 
 function exibirTodosOsNomes() {
-    mapaEs.showAllNomes();
+    mapaSvg.showAllNomes();
 }
 
 function exibirApenasLinhares() {
 
-    mapaEs.hideAllTracados();
-    mapaEs.showTracado('3203205');
+    mapaSvg.hideAllTracados();
+    mapaSvg.showTracado('3203205');
 
-    mapaEs.hideAllNomes();
-    mapaEs.showNome('3203205');
+    mapaSvg.hideAllNomes();
+    mapaSvg.showNome('3203205');
 }
 
 function customizarColatina() {
-    mapaEs.setTracado('3201506', "#a5d6a7"); //MDC GREEN 200
-    mapaEs.setNome('3201506', '#d32f2f'); //MDC RED 700
+    mapaSvg.setTracado('3201506', "#ffcc80"); //MDC ORANGE 200
+    mapaSvg.setNome('3201506', '#d32f2f'); //MDC RED 700
+    mapaSvg.setHover('3201506', '#ffa726'); //MDC GREEN 400
 }
 
 function customizarCachoeiro() {
-    mapaEs.setTracado('3201209', '#b39ddb', 'black'); //MDC DEEP PURPLE 200
-    mapaEs.setNome('3201209', '#ffee58', true); //MDC YELLOW 400
+    mapaSvg.setTracado('3201209', '#b39ddb', 'black'); //MDC DEEP PURPLE 200
+    mapaSvg.setNome('3201209', '#ffee58', true); //MDC YELLOW 400
+    mapaSvg.setHover('3201209', '#7e57c2'); //MDC DEEP PURPLE 400
 }
 
 //----------------------------------------------
@@ -59,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Ao fazer isso, as tags internas do svg passam a fazer parte do DOM,
     //  o que nos permite manipulá-los com css e javascript.
 
-    const response = await fetch('../dist/mapaEs.svg');
+    const response = await fetch('../dist/mapa-es.svg');
     const svgContent = await response.text();
 
     const container = document.querySelector('#map-holder');
@@ -67,17 +71,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     const svgElement = container.querySelector('svg');
     
-    //inicializa o mapaEs para facilitar o uso do mapa
-    mapaEs.init(svgElement);
+    //inicializa o mapaSvg para facilitar o uso do mapa
+    mapaSvg.init(svgElement);
 
     // Configura eventos de hover dos traçados dos municípios
-    mapaEs.setAllHover('#fff9c4', null, '#1b5e20'); //MDC YELLOW 100, null, GREEN 900
+    mapaSvg.setAllHover('#fff9c4', null, '#1b5e20'); //MDC YELLOW 100, null, GREEN 900
 
     //lógica de arrastar (pan and zoom)
     PanAndZoomControls.init(container, svgElement);
     
     //Click: mostra um alerta contendo o nome e o código IBGE do município
-    mapaEs.tracados.forEach(t => {
+    mapaSvg.tracados.forEach(t => {
         t.addEventListener("click", () => {
             const munObj = municipioData.find(m => m.codigoIbge === t.id);
             alert(`${munObj.codigoIbge} - ${munObj.nome}`);
