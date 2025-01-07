@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2025 - Luciano Lorencini - disponível em: https://github.com/luclorencini/mapa-es-svg
+ * Copyright (c) 2025 - Luciano Lorencini - disponível em: https://github.com/luclorencini/mapaSvg.js
  * Licenciado sob a Licença MIT. Consulte o arquivo LICENSE para mais detalhes.
  */
 

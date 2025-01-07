@@ -30,7 +30,7 @@ Existem duas maneiras de baixar os arquivos do projeto:
 
 ### 1. **Baixar pela página de releases**
 
-Você pode acessar a [Página de Releases](https://github.com/luclorencini/mapa-es-svg/releases/tag/1.0.0) do projeto no GitHub e fazer o download da versão mais recente do projeto. Na página, clique no arquivo desejado para realizar o download.
+Você pode acessar a [Página de Releases](https://github.com/luclorencini/mapaSvg.js/releases) do projeto no GitHub e fazer o download da versão mais recente do projeto. Na página, clique no arquivo desejado para realizar o download.
 
 ### 2. **Baixar diretamente da pasta `dist`**
 
