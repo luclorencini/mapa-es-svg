@@ -241,8 +241,10 @@ const mapaSvg = {
      * @returns {string|null} A cor de fundo definida, ou null se não encontrado.
      */
     getCorFundo(id) {
+        if (!id) return;
         let t = this.getTracadoElem(id);
-        return t ? t.getAttribute('fill') : null;
+        if (!t) return;
+        return t.getAttribute('fill');
     },
 
     /**
@@ -264,8 +266,10 @@ const mapaSvg = {
      * @returns {string|null} A cor de borda definida, ou null se não encontrado.
      */
     getCorBorda(id) {
+        if (!id) return;
         let t = this.getTracadoElem(id);
-        return t ? t.getAttribute('stroke') : null;
+        if (!t) return;
+        return t.getAttribute('stroke');
     },
 
     /**
@@ -292,14 +296,12 @@ const mapaSvg = {
         if (!tog) return;
 
         let ret = '';
-
         this._executeInTog(
             (elText) => {
                 ret = elText.getAttribute('fill');
             },
             tog
         );
-
         return ret;
     },
 
@@ -381,17 +383,53 @@ const mapaSvg = {
         );
     },
 
-    //TODO
-    getTracadoCss(id) { },
+    //TODO - escrever doc
+    getTracadoCss(id) {
+        if (!id) return;
+        let t = this.getTracadoElem(id);
+        if (!t) return;
+        return t.getAttribute('class');
+     },
 
-    //TODO
-    setTracadoCss(id, nome) { },
+    //TODO - escrever doc
+    setTracadoCss(id, nomeClasse) { 
+        if (!id) return;
+        if (!nomeClasse) return;
+        let t = this.getTracadoElem(id);
+        if (!t) return;
+        t.setAttribute("class", nomeClasse);
+    },
 
-    //TODO
-    getNomeCss(id) { },
+    //TODO - escrever doc
+    getNomeCss(id) { 
+        if (!id) return;
+        let tog = this.getNomeElem(id);
+        if (!tog) return;
 
-    //TODO
-    setNomeCss(id, nome) { },
+        let ret = '';
+        this._executeInTog(
+            (elText) => {
+                ret = elText.getAttribute('class');
+            },
+            tog
+        );
+        return ret;
+    },
+
+    //TODO - escrever doc
+    setNomeCss(id, nomeClasse) { 
+        if (!id) return;
+        if (!nomeClasse) return;
+        let tog = this.getNomeElem(id);
+        if (!tog) return;
+
+        this._executeInTog(
+            (elText, cssClass) => {
+                elText.setAttribute("class", cssClass);
+            },
+            tog, nomeClasse
+        );
+    },
 
     /**
      * Exibe o traçado de uma localidade a partir do id informado.

@@ -52,11 +52,17 @@ function exibirTodosOsNomes() {
 
 function exibirApenasLinhares() {
 
+    const codIbge = '3203205';
+
     mapaSvg.hideAllTracados();
-    mapaSvg.showTracado('3203205');
+    mapaSvg.showTracado(codIbge);
 
     mapaSvg.hideAllNomes();
-    mapaSvg.showNome('3203205');
+    mapaSvg.showNome(codIbge);
+
+    //customizando com css direto
+    mapaSvg.setTracadoCss(codIbge, 'destaque-linhares');
+    mapaSvg.setNomeCss(codIbge, 'nome-linhares');
 }
 
 function customizarColatina() {
