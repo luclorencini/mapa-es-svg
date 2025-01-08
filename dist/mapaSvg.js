@@ -383,16 +383,24 @@ const mapaSvg = {
         );
     },
 
-    //TODO - escrever doc
+    /**
+     * Obtém a classe CSS associada ao elemento de traçaado (<path>) de uma localidade a partir do id informado.
+     * @param {string} id - O código IBGE, se for um município.
+     * @returns {string|undefined} - A classe CSS associada ao elemento, ou `undefined` caso o elemento não seja encontrado.
+     */
     getTracadoCss(id) {
         if (!id) return;
         let t = this.getTracadoElem(id);
         if (!t) return;
         return t.getAttribute('class');
-     },
+    },
 
-    //TODO - escrever doc
-    setTracadoCss(id, nomeClasse) { 
+    /**
+     * Define a classe CSS para o elemento de traçaado (<path>) de uma localidade a partir do id informado.
+     * @param {string} id - O código IBGE, se for um município.
+     * @param {string} nomeClasse - O nome da classe CSS a ser aplicada ao elemento <path>, via atributo 'class'.
+     */
+    setTracadoCss(id, nomeClasse) {
         if (!id) return;
         if (!nomeClasse) return;
         let t = this.getTracadoElem(id);
@@ -400,8 +408,12 @@ const mapaSvg = {
         t.setAttribute("class", nomeClasse);
     },
 
-    //TODO - escrever doc
-    getNomeCss(id) { 
+    /**
+     * Obtém a classe CSS associada ao elemento de nome (<text>) de uma localidade a partir do id informado.
+     * @param {string} id - O código IBGE, se for um município.
+     * @returns {string|undefined} - A classe CSS associada ao elemento, ou `undefined` caso o elemento não seja encontrado.
+     */
+    getNomeCss(id) {
         if (!id) return;
         let tog = this.getNomeElem(id);
         if (!tog) return;
@@ -416,8 +428,12 @@ const mapaSvg = {
         return ret;
     },
 
-    //TODO - escrever doc
-    setNomeCss(id, nomeClasse) { 
+    /**
+     * Define a classe CSS para o elemento de nome (<text>) de uma localidade a partir do id informado.
+     * @param {string} id - O código IBGE, se for um município.
+     * @param {string} nomeClasse - O nome da classe CSS a ser aplicada ao elemento <text>, via atributo 'class'.
+     */
+    setNomeCss(id, nomeClasse) {
         if (!id) return;
         if (!nomeClasse) return;
         let tog = this.getNomeElem(id);
