@@ -9,7 +9,7 @@
 function destacarGrandeVitoriaInterior() {
 
     mapaSvg.setAllTracados('#e8f5e9', '#757575'); // MDC GREEN 50, GRAY 600
-    mapaSvg.setAllHover('#c8e6c9'); // MDC GREEN 100
+    mapaSvg.setAllHover({ corFill: '#c8e6c9'}); // MDC GREEN 100
     mapaSvg.setAllNomes('#212121'); // MDC GREY 900
 
     const municipiosGV = [
@@ -22,9 +22,9 @@ function destacarGrandeVitoriaInterior() {
         '3205309', //vitoria
     ];
 
-    municipiosGV.forEach(cod => {
-        mapaSvg.setTracado(cod, "#bbdefb"); //MDC BLUE 100
-        mapaSvg.setHover(cod, '#64b5f6', '#1565c0', '#212121'); //MDC BLUE 300, BLUE 800, GREY 900
+    municipiosGV.forEach(codIbge => {
+        mapaSvg.setTracado(codIbge, "#bbdefb"); //MDC BLUE 100
+        mapaSvg.setHover(codIbge, { corFill: '#64b5f6', corStroke: '#1565c0', corName: '#212121' }); //MDC BLUE 300, BLUE 800, GREY 900
     });
 }
 
@@ -48,13 +48,13 @@ function exibirApenasLinhares() {
 function customizarColatina() {
     mapaSvg.setTracado('3201506', "#ffcc80"); //MDC ORANGE 200
     mapaSvg.setNome('3201506', '#d32f2f'); //MDC RED 700
-    mapaSvg.setHover('3201506', '#ffa726'); //MDC GREEN 400
+    mapaSvg.setHover('3201506', { corFill: '#ffa726' }); //MDC GREEN 400
 }
 
 function customizarCachoeiro() {
     mapaSvg.setTracado('3201209', '#b39ddb', 'black'); //MDC DEEP PURPLE 200
     mapaSvg.setNome('3201209', '#ffee58', true); //MDC YELLOW 400
-    mapaSvg.setHover('3201209', '#7e57c2'); //MDC DEEP PURPLE 400
+    mapaSvg.setHover('3201209', { corFill: '#7e57c2' }); //MDC DEEP PURPLE 400
 }
 
 //----------------------------------------------
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     mapaSvg.init(svgElement);
 
     // Configura eventos de hover dos traçados dos municípios
-    mapaSvg.setAllHover('#fff9c4', null, '#1b5e20'); //MDC YELLOW 100, null, GREEN 900
+    mapaSvg.setAllHover({ corFill: '#fff9c4', corName: '#1565c0' }); //MDC YELLOW 100, BLUE 800
 
     //lógica de arrastar (pan and zoom)
     PanAndZoomControls.init(container, svgElement);

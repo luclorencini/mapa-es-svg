@@ -239,12 +239,13 @@ const mapaSvg = {
     /**
      * Define as cores de preenchimento (fill), borda (stroke) e nome de um município ao passar o mouse sobre seu traçado.
      * Ao tirar o cursor do mouse sobre o município, ele retorna às cores definidas anteriormente.
-     * @param {string} codigoIbge - O código IBGE do município.
-     * @param {string} [corFill] - A cor de preenchimento do traçado.
-     * @param {string} [corStroke] - A cor da borda do traçado.
-     * @param {string} [corName] - A cor do nome do município.
-     */    
-    setHover(codigoIbge, corFill, corStroke, corName) {
+     * @param {string} codigoIbge - O código IBGE do município. 
+     * @param {Object} params - O objeto contendo os parâmetros para configurar as cores.
+     * @param {string} [params.corFill] - A cor de preenchimento do traçado.
+     * @param {string} [params.corStroke] - A cor da borda do traçado.
+     * @param {string} [params.corName] - A cor do nome do município.
+     */
+    setHover(codigoIbge, { corFill, corStroke, corName }) {
         if (!codigoIbge) return;
         if (!corFill && !corStroke && !corName) return;
     
@@ -321,13 +322,14 @@ const mapaSvg = {
     
     /**
      * Define as cores de preenchimento, borda e texto de um município para todos os traçados dos municípios ao passar o mouse sobre eles.
-     * @param {string} [corFill] - A cor de preenchimento para todos os traçados.
-     * @param {string} [corStroke] - A cor da borda para todos os traçados.
-     * @param {string} [corName] - A cor do nome do município para todos os traçados.
+     * @param {Object} params - O objeto contendo as cores para os traçados.
+     * @param {string} [params.corFill] - A cor de preenchimento para todos os traçados.
+     * @param {string} [params.corStroke] - A cor da borda para todos os traçados.
+     * @param {string} [params.corName] - A cor do nome do município para todos os traçados.
      */
-    setAllHover(corFill, corStroke, corName) {
+    setAllHover({ corFill, corStroke, corName }) {
         mapaSvg.tracados.forEach(t => {
-            this.setHover(t.id, corFill, corStroke, corName);
+            this.setHover(t.id, { corFill, corStroke, corName });
         });
     },
 
