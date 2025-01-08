@@ -8,9 +8,15 @@
 
 function destacarGrandeVitoriaInterior() {
 
-    mapaSvg.setAllTracados('#e8f5e9', '#757575'); // MDC GREEN 50, GRAY 600
-    mapaSvg.setAllHover({ corFill: '#c8e6c9'}); // MDC GREEN 100
-    mapaSvg.setAllNomes('#212121'); // MDC GREY 900
+    mapaSvg.setAllLocalidades({
+        corFundo: '#e8f5e9', // MDC GREEN 50
+        corBorda: '#757575', // MDC GRAY 600
+        corNome: '#212121', // MDC GREY 900
+    });
+
+    mapaSvg.setAllLocalidadesHover({
+        corFundo: '#c8e6c9', // MDC GREEN 100
+    });
 
     const municipiosGV = [
         '3201308', //cariacica
@@ -23,8 +29,16 @@ function destacarGrandeVitoriaInterior() {
     ];
 
     municipiosGV.forEach(codIbge => {
-        mapaSvg.setTracado(codIbge, "#bbdefb"); //MDC BLUE 100
-        mapaSvg.setHover(codIbge, { corFill: '#64b5f6', corStroke: '#1565c0', corName: '#212121' }); //MDC BLUE 300, BLUE 800, GREY 900
+
+        //usando um setter específico como demonstração
+        mapaSvg.setCorFundo(codIbge, '#bbdefb'); //MDC BLUE 100
+
+        mapaSvg.setLocalidadeHover(codIbge, {
+            corFundo: '#64b5f6', // MDC BLUE 300
+            corBorda: '#1565c0', // MDC BLUE 800
+            corNome: '#212121', // MDC GREY 900
+            negrito: true
+        });
     });
 }
 
@@ -46,15 +60,33 @@ function exibirApenasLinhares() {
 }
 
 function customizarColatina() {
-    mapaSvg.setTracado('3201506', "#ffcc80"); //MDC ORANGE 200
-    mapaSvg.setNome('3201506', '#d32f2f'); //MDC RED 700
-    mapaSvg.setHover('3201506', { corFill: '#ffa726' }); //MDC GREEN 400
+
+    const codIbge = '3201506';
+
+    mapaSvg.setLocalidade(codIbge, {
+        corFundo: '#ffcc80', // MDC ORANGE 200
+        corNome: '#d32f2f', // MDC RED 700
+    });
+
+    mapaSvg.setLocalidadeHover(codIbge, {
+        corFundo: '#ffa726', // MDC GREEN 400
+    });
 }
 
 function customizarCachoeiro() {
-    mapaSvg.setTracado('3201209', '#b39ddb', 'black'); //MDC DEEP PURPLE 200
-    mapaSvg.setNome('3201209', '#ffee58', true); //MDC YELLOW 400
-    mapaSvg.setHover('3201209', { corFill: '#7e57c2' }); //MDC DEEP PURPLE 400
+
+    const codIbge = '3201209';
+
+    mapaSvg.setLocalidade(codIbge, {
+        corFundo: '#b39ddb', // MDC ORANGE 200
+        corBorda: 'black',
+        corNome: '#ffee58', // MDC YELLOW 400        
+    });
+
+    mapaSvg.setLocalidadeHover(codIbge, {
+        corFundo: '#7e57c2', // MDC DEEP PURPLE 400
+        negrito: true,
+    });
 }
 
 //----------------------------------------------
@@ -73,25 +105,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const container = document.querySelector('#map-holder');
     container.innerHTML = svgContent;
-    
+
     const svgElement = container.querySelector('svg');
-    
+
     //inicializa o mapaSvg para facilitar o uso do mapa
     mapaSvg.init(svgElement);
 
     // Configura eventos de hover dos traçados dos municípios
-    mapaSvg.setAllHover({ corFill: '#fff9c4', corName: '#1565c0' }); //MDC YELLOW 100, BLUE 800
+    mapaSvg.setAllLocalidadesHover({
+        corFundo: '#fff9c4', // MDC YELLOW 100
+        corNome: '#1565c0', // BLUE 800
+    });
 
     //lógica de arrastar (pan and zoom)
     PanAndZoomControls.init(container, svgElement);
-    
+
     //Click: mostra um alerta contendo o nome e o código IBGE do município
     mapaSvg.tracados.forEach(t => {
         t.addEventListener("click", () => {
             const munObj = municipioData.find(m => m.codigoIbge === t.id);
             alert(`${munObj.codigoIbge} - ${munObj.nome}`);
         });
-    });    
+    });
 });
 
 //extra - controle de movimento (pan) e zoom

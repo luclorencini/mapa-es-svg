@@ -61,17 +61,179 @@ const mapaSvg = {
         });
     },
 
-    //TODO
-    setLocalidade(id, { corFundo, corBorda, corNome, isNegrito, cssTracado, cssNome }) { },
+    /**
+     * Configura os estilos de uma localidade, incluindo cores de fundo, borda, nome e outros atributos.
+     * 
+     * Este é o método preferencial para configurar múltiplos atributos de uma localidade de uma vez. Ele permite aplicar alterações
+     * em vários atributos de estilo (como cor de fundo, borda, nome, e negrito) com uma única chamada. Caso o usuário prefira, 
+     * ainda é possível utilizar os setters individuais para configurar cada atributo separadamente.
+     * 
+     * @param {string} id - O código IBGE, se for um município.
+     * @param {Object} options - O objeto contendo as opções de estilo para a localidade.
+     * @param {string} options.corFundo - A cor de fundo a ser aplicada à localidade.
+     * @param {string} options.corBorda - A cor da borda a ser aplicada à localidade.
+     * @param {string} options.corNome - A cor do nome a ser aplicada à localidade.
+     * @param {boolean} options.negrito - Determina se o nome da localidade deve ser exibido em negrito.
+     * @param {string} options.cssTracado - Estilos CSS adicionais a serem aplicados ao tracado (ainda não implementado).
+     * @param {string} options.cssNome - Estilos CSS adicionais a serem aplicados ao nome da localidade (ainda não implementado).
+     */
+    setLocalidade(id, { corFundo, corBorda, corNome, negrito, cssTracado, cssNome }) {
+        if (!id) return;
+        if (!corFundo && !corBorda && !corNome && !negrito && !cssTracado && !cssNome) return;
 
-    //TODO
-    setAllLocalidades({ corFundo, corBorda, corNome, isNegrito, cssTracado, cssNome }) { },
+        if (corFundo) this.setCorFundo(id, corFundo);
+        if (corBorda) this.setCorBorda(id, corBorda);
+        if (corNome) this.setCorNome(id, corNome);
+        if (negrito) this.setNegrito(id, negrito);
+        //if (cssTracado) this.setTracadoCss(id, cssTracado);
+        //if (cssNome) this.setNomeCss(id, cssNome);
 
-    //TODO
-    setLocalidadeHover(id, { corFundo, corBorda, corNome, isNegrito, cssTracado, cssNome }) { },
+        return;
+    },
 
-    //TODO
-    setAllLocalidadesHover({ corFundo, corBorda, corNome, isNegrito, cssTracado, cssNome }) { },
+    /**
+     * Configura os estilos de todos os elementos de localidade no mapa.
+     * @param {Object} options - O objeto contendo as opções de estilo para todas as localidades.
+     * @param {string} options.corFundo - A cor de fundo a ser aplicada aos elementos de localidade.
+     * @param {string} options.corBorda - A cor da borda a ser aplicada aos elementos de localidade.
+     * @param {string} options.corNome - A cor do nome a ser aplicada aos elementos de localidade.
+     * @param {boolean} options.negrito - Determina se o texto dos nomes das localidades deve ser exibido em negrito (ainda não implementado).
+     * @param {string} options.cssTracado - Estilos CSS adicionais a serem aplicados aos tracados (ainda não implementado).
+     * @param {string} options.cssNome - Estilos CSS adicionais a serem aplicados aos nomes das localidades (ainda não implementado).
+     */
+    setAllLocalidades({ corFundo, corBorda, corNome, negrito, cssTracado, cssNome }) {
+        if (!corFundo && !corBorda && !corNome && !negrito && !cssTracado && !cssNome) return;
+
+        mapaSvg.tracados.forEach(t => {
+            this.setLocalidade(t.id, { corFundo, corBorda, corNome, negrito, cssTracado, cssNome });
+        });
+    },
+
+    /**
+     * Configura os efeitos de hover (passar o mouse) para um elemento de localidade específico.
+     * Este método altera as cores de fundo, borda e nome de uma localidade, além de aplicar alterações de estilo quando o mouse passa sobre ele.
+     * @param {string} id - O código IBGE, se for um município.
+     * @param {Object} options - Um objeto contendo as opções de estilo.
+     * @param {string} options.corFundo - A cor de fundo a ser aplicada quando o mouse passar sobre o elemento.
+     * @param {string} options.corBorda - A cor da borda a ser aplicada quando o mouse passar sobre o elemento.
+     * @param {string} options.corNome - A cor do nome a ser aplicada quando o mouse passar sobre o elemento.
+     * @param {boolean} options.negrito - Determina se o texto do nome deve ser exibido em negrito (ainda não implementado).
+     * @param {string} options.cssTracado - Estilos CSS adicionais a serem aplicados ao tracado (ainda não implementado).
+     * @param {string} options.cssNome - Estilos CSS adicionais a serem aplicados ao nome (ainda não implementado).
+     */
+    setLocalidadeHover(id, { corFundo, corBorda, corNome, negrito, cssTracado, cssNome }) {
+        if (!id) return;
+        if (!corFundo && !corBorda && !corNome && !negrito && !cssTracado && !cssNome) return;
+
+        let t = this.getTracadoElem(id);
+        if (!t) return;
+
+        let tog = this.getNomeElem(id);
+        if (!tog) return;
+
+        // Funções para mouseover e mouseout, com escopo correto
+        const handleMouseOver = () => {
+            if (corFundo) {
+                const originalFill = t.getAttribute("fill");
+                t.setAttribute("fill", corFundo);
+                t.setAttribute("data-original-fill", originalFill);
+            }
+            if (corBorda) {
+                const originalStroke = t.getAttribute("stroke");
+                t.setAttribute("stroke", corBorda);
+                t.setAttribute("data-original-stroke", originalStroke);
+            }
+            if (corNome) {
+                this._executeInTog(
+                    (elText, corHex) => {
+                        const originalText = elText.getAttribute("fill");
+                        elText.setAttribute("fill", corHex);
+                        elText.setAttribute("stroke", corHex);
+                        elText.setAttribute("data-original-text", originalText);
+                    },
+                    tog, corNome
+                );
+            }
+            if (negrito !== null && negrito !== undefined) {
+                this._executeInTog(
+                    (elText, isBold) => {
+                        const originalFontWeight = elText.getAttribute("font-weight");
+                        elText.setAttribute("font-weight", (isBold === true ? 'bold' : ''));
+                        elText.setAttribute("data-original-font-weight", originalFontWeight);
+                    },
+                    tog, negrito
+                );
+            }
+            //TODO - o que fazer com cssTracado e cssNome?
+        };
+
+        const handleMouseOut = () => {
+            if (corFundo) {
+                const originalFill = t.getAttribute("data-original-fill");
+                t.setAttribute("fill", originalFill);
+            }
+            if (corBorda) {
+                const originalStroke = t.getAttribute("data-original-stroke");
+                t.setAttribute("stroke", originalStroke);
+            }
+            if (corNome) {
+                this._executeInTog(
+                    (elText) => {
+                        const originalText = elText.getAttribute("data-original-text");
+                        elText.setAttribute("fill", originalText);
+                        elText.setAttribute("stroke", originalText);
+                    },
+                    tog
+                );
+            }
+            if (negrito !== null && negrito !== undefined) {
+                this._executeInTog(
+                    (elText) => {
+                        const originalFontWeight = elText.getAttribute("data-original-font-weight");
+                        elText.setAttribute("font-weight", originalFontWeight);
+                    },
+                    tog
+                );
+            }
+            //TODO - o que fazer com cssTracado e cssNome?
+        };
+
+        // Verifica se o elemento já possui listeners registrados
+        if (!this.eventHandlers) {
+            this.eventHandlers = {};
+        }
+
+        // Se já houver handlers registrados, remova-os antes de adicionar novos
+        if (this.eventHandlers[id]) {
+            t.removeEventListener("mouseover", this.eventHandlers[id].mouseover);
+            t.removeEventListener("mouseout", this.eventHandlers[id].mouseout);
+        }
+
+        // Registra os novos handlers
+        t.addEventListener("mouseover", handleMouseOver);
+        t.addEventListener("mouseout", handleMouseOut);
+
+        // Armazena os handlers no objeto para garantir que a mesma referência seja usada
+        this.eventHandlers[id] = { mouseover: handleMouseOver, mouseout: handleMouseOut };
+    },
+
+    /**
+     * Configura os efeitos de hover (passar o mouse) para todos os elementos de localidade no mapa.
+     * @param {Object} options - O objeto contendo as opções de estilo para todas as localidades.
+     * @param {string} options.corFundo - A cor de fundo a ser aplicada quando o mouse passar sobre os elementos.
+     * @param {string} options.corBorda - A cor da borda a ser aplicada quando o mouse passar sobre os elementos.
+     * @param {string} options.corNome - A cor do nome a ser aplicada quando o mouse passar sobre os elementos.
+     * @param {boolean} options.negrito - Determina se o texto dos nomes deve ser exibido em negrito (ainda não implementado).
+     * @param {string} options.cssTracado - Estilos CSS adicionais a serem aplicados ao tracado (ainda não implementado).
+     * @param {string} options.cssNome - Estilos CSS adicionais a serem aplicados ao nome (ainda não implementado). 
+     */
+    setAllLocalidadesHover({ corFundo, corBorda, corNome, negrito, cssTracado, cssNome }) {
+        if (!corFundo && !corBorda && !corNome && !negrito && !cssTracado && !cssNome) return;
+
+        mapaSvg.tracados.forEach(t => {
+            this.setLocalidadeHover(t.id, { corFundo, corBorda, corNome, negrito, cssTracado, cssNome });
+        });
+    },
 
     /**
      * Obtém a cor de fundo (atributo 'fill' do elemento '<path>') de uma localidade a partir do id informado.
@@ -153,9 +315,9 @@ const mapaSvg = {
         if (!tog) return;
 
         this._executeInTog(
-            (elText, cor) => {
-                elText.setAttribute("fill", cor);
-                elText.setAttribute("stroke", cor);
+            (elText, corHex) => {
+                elText.setAttribute("fill", corHex);
+                elText.setAttribute("stroke", corHex);
             },
             tog, cor
         );
