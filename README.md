@@ -4,6 +4,8 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 
 ### Link para demonstração: https://luclorencini.github.io
 
+### Downloads: https://github.com/luclorencini/mapaSvg.js/releases
+
 #### Funcionalidades principais
 
 - Inicialização do mapa SVG com eventos de hover e interação.
@@ -26,16 +28,7 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 
 ## Download
 
-Existem duas maneiras de baixar os arquivos do projeto:
-
-### 1. **Baixar pela página de releases**
-
-Você pode acessar a [Página de Releases](https://github.com/luclorencini/mapaSvg.js/releases) do projeto no GitHub e fazer o download da versão mais recente do projeto. Na página, clique no arquivo desejado para realizar o download.
-
-### 2. **Baixar diretamente da pasta `dist`**
-
-Se preferir, você também pode fazer o download dos arquivos diretamente da pasta `dist` do repositório. Basta acessar o repositório e navegar até a pasta `dist` para obter os arquivos mais recentes.
-
+Você pode acessar a [Página de Releases](https://github.com/luclorencini/mapaSvg.js/releases) do projeto no GitHub e fazer o download da versão oficial mais recente do projeto. Na página, clique no arquivo desejado para realizar o download.
 
 ## Exemplos de Uso
 
