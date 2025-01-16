@@ -31,7 +31,7 @@ const mapaSvg = {
     nomes: null,
 
     /**
-     * Elemento SVG que contém o mapa.
+     * O elemento SVG que contém o mapa das localidades.
      * @type {SVGSVGElement}
      */
     svgElement: null,
@@ -559,7 +559,7 @@ const mapaSvg = {
 
     _executeInTog(metodo, tog, ...params) {
 
-        // Verifica o tipo de tag do elemento 'tog' (<text> ou <g>)
+        // Verifica o tipo de tag do elemento 'tog' ('<text>' ou '<g>')
         if (tog.tagName == 'text') {
             metodo(tog, ...params);  // Chama o método com os parâmetros fornecidos
         }
