@@ -1,10 +1,10 @@
 # mapaSvg.js - Mapa Iterativo do Espírito Santo
 
-Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterativo.
+Crie um gráfico interativo e totalmente customizável do estado do Espírito Santo.
 
-### Link para demonstração: https://luclorencini.github.io
+### Link para demonstração: [https://luclorencini.github.io](https://luclorencini.github.io)
 
-### Downloads: https://github.com/luclorencini/mapaSvg.js/releases
+### Downloads: [https://github.com/luclorencini/mapaSvg.js/releases](https://github.com/luclorencini/mapaSvg.js/releases)
 
 #### Funcionalidades principais
 
@@ -29,7 +29,7 @@ Crie um gráfico do estado do Espírito Santo, totalmente customizável e iterat
 
 ## Download
 
-Você pode acessar a [Página de Releases](https://github.com/luclorencini/mapaSvg.js/releases) do projeto no GitHub e fazer o download da versão oficial mais recente do projeto. Na página, clique no arquivo desejado para realizar o download.
+Você pode acessar a [Página de Releases](https://github.com/luclorencini/mapaSvg.js/releases) do projeto no GitHub e fazer o download da versão oficial mais recente. Na página, clique no arquivo desejado para realizar o download.
 
 ## Instalação
 
@@ -49,7 +49,7 @@ import mapaSvg from 'mapaSvg.js';
 
 ### Carregando o arquivo SVG
 
-A melhor forma de inserir um SVG na página de forma a poder manipulá-lo é carregando-o com `fetch` e inserir no DOM. Ao fazer isso, as tags internas do SVG passam a fazer parte do DOM, o que nos permite manipulá-los com css e javascript
+A melhor forma de inserir um SVG na página para poder manipulá-lo é carregando-o com `fetch` e inserindo-o no DOM. Assim, as tags internas do SVG passam a fazer parte do DOM, permitindo manipulá-las com CSS e JavaScript.
 
 ```javascript
 const response = await fetch('/dist/mapa-es.svg');
@@ -59,7 +59,7 @@ const container = document.querySelector('#map-holder');
 container.innerHTML = svgContent;
 ```
 
-O código acima realiza o seguinte processo:
+O código acima realiza o seguinte:
  - Usa o `fetch` para buscar o arquivo SVG.
  - Converte o conteúdo da resposta para texto com `response.text()`.
  - Localiza a `<div>` com o id `#map-holder` e insere o conteúdo SVG diretamente dentro dela com `container.innerHTML = svgContent`.
@@ -69,7 +69,7 @@ O código acima realiza o seguinte processo:
 
 ### Inicializando o mapa
 
-Após carregar o SVG, basta agora obtê-lo e chamar o método `init` informando-o como parâmetro:
+Após carregar o SVG, basta obtê-lo e chamar o método `init`, passando o SVG como parâmetro:
 
 ```javascript
 const svgElement = container.querySelector('svg'); // Obtém o SVG do mapa recém-carregado na página
@@ -78,7 +78,7 @@ mapaSvg.init(svgElement);
 
 ### Modificando atributos de localidades
 
-Você pode alterar atributos como a cor de fundo, cor de borda, cor do texto ou negrito para uma localidade específica com o método `setLocalidade()`.
+Você pode alterar atributos como cor de fundo, cor de borda, cor do texto ou negrito de uma localidade específica com o método `setLocalidade()`.
 
 ```javascript
 // Altera a cor de fundo, borda e nome do município com o código IBGE 3205309 (Vitória)
@@ -90,7 +90,7 @@ mapaSvg.setLocalidade('3205309', {
 });
 ```
 
-Os valores são opcionais, informe apenas os que desejar alterar.
+Os valores são opcionais; informe apenas os que deseja alterar.
 
 ```javascript
 // Altera a cor de fundo do município com o código IBGE 3201209 (Cachoeiro de Itapemirim)
@@ -376,4 +376,6 @@ Existe a vontade de inserir mapas de mais estados brasileiros na biblioteca. Se 
 
 Se você tiver alguma dúvida ou sugestão, entre em contato:
 
-Email: lorencini@gmail.com
+* Email: lorencini@gmail.com
+
+* GitHub: [luclorencini](https://github.com/luclorencini)
