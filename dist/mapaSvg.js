@@ -39,12 +39,12 @@ const mapaSvg = {
     /**
      * Carrega dinamicamente o mapa SVG baseado na sigla da localidade fornecida.
      * 
-     * @param {string} siglaLocalidade - A sigla que determina qual mapa SVG será carregado.
-     *    - "ES" para o mapa de Espírito Santo (outros valores resultam em erro).
+     * @param {string} siglaMapa - A sigla que determina qual mapa SVG será carregado.
+     *    - "ES" para o mapa do Espírito Santo (outros valores resultam em erro).
      * @param {string} containerSelector - O seletor CSS do container HTML onde o mapa será inserido (normalmente uma div).
      *    - Exemplo: "#map-container" para selecionar uma div com o ID "map-container".
      * 
-     * @throws {Error} Se a siglaLocalidade não for válida ou se houver problemas ao carregar o SVG.
+     * @throws {Error} Se a siglaMapa não for válida ou se houver problemas ao carregar o SVG.
      *    - Lança um erro se a sigla não for reconhecida.
      *    - Lança um erro se o arquivo SVG não for encontrado ou ocorrer falha no carregamento.
      * 
@@ -52,17 +52,17 @@ const mapaSvg = {
      * // Carrega o mapa do Espírito Santo na div com o ID 'map-container'
      * load('ES', '#map-container');
      */
-    async load(siglaLocalidade, containerSelector) {
+    async load(siglaMapa, containerSelector) {
 
-        // Função interna para obter a URL do SVG com base na siglaLocalidade
+        // Função interna para obter a URL do SVG com base na siglaMapa
         const getSvgUrl = () => {
             let mapaFileName = '';
 
-            // Verificar qual mapa deve ser carregado com base na siglaLocalidade
-            if (siglaLocalidade === 'ES') {
+            // Verificar qual mapa deve ser carregado com base na siglaMapa
+            if (siglaMapa === 'ES') {
                 mapaFileName = 'mapa-es.svg';        
             } else {
-                throw new Error(`Sigla de localidade inválida: ${siglaLocalidade}`);
+                throw new Error(`Sigla de localidade inválida: ${siglaMapa}`);
             }
 
             // Procurar pelo script que contém 'mapaSvg.js' no seu src

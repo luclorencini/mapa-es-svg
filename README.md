@@ -47,34 +47,26 @@ import mapaSvg from 'mapaSvg.js';
 
 ## Exemplos de Uso
 
-### Carregando o arquivo SVG
+### Carregando o mapa 
 
-A melhor forma de inserir um SVG na página para poder manipulá-lo é carregando-o com `fetch` e inserindo-o no DOM. Assim, as tags internas do SVG passam a fazer parte do DOM, permitindo manipulá-las com CSS e JavaScript.
+O método `load()` deve ser utilizado para carregar dinamicamente o mapa SVG, com base na sigla da localidade fornecida.
+O método recebe dois parâmetros: 
+* a sigla da localidade (como 'ES' para Espírito Santo)
+* o seletor do container onde o mapa será inserido, compatível com o padrão de query selector.
 
-```javascript
-const response = await fetch('/dist/mapa-es.svg');
-const svgContent = await response.text();
-
-const container = document.querySelector('#map-holder');
-container.innerHTML = svgContent;
+```html
+<body>
+    <!-- Container onde o mapa será carregado -->
+    <div id="map-container"></div>
+</body>
 ```
 
-O código acima realiza o seguinte:
- - Usa o `fetch` para buscar o arquivo SVG.
- - Converte o conteúdo da resposta para texto com `response.text()`.
- - Localiza a `<div>` com o id `#map-holder` e insere o conteúdo SVG diretamente dentro dela com `container.innerHTML = svgContent`.
-
-> **Importante**: O uso de `fetch` não funciona em arquivos locais no sistema de arquivos. Para executar este exemplo, recomendamos o uso do Visual Studio Code com o plug-in **Live Server**, permitindo que você execute o código via `localhost`.
-
-
-### Inicializando o mapa
-
-Após carregar o SVG, basta obtê-lo e chamar o método `init`, passando o SVG como parâmetro:
-
 ```javascript
-const svgElement = container.querySelector('svg'); // Obtém o SVG do mapa recém-carregado na página
-mapaSvg.init(svgElement);
+// Carregar o mapa do Espírito Santo no container com o ID 'map-container'
+await mapaSvg.load('ES', '#map-container');
 ```
+
+> **Importante**: O método `load()` faz uso de `fetch`, que não funciona em arquivos locais no sistema de arquivos. Para executar este exemplo, recomendamos o uso do Visual Studio Code com o plug-in **Live Server**, permitindo que você execute o código via `localhost`.
 
 ### Modificando atributos de localidades
 
@@ -201,24 +193,16 @@ mapaSvg.tracados.forEach(t => {
   <script src="/dist/mapaSvg.js"></script>
 </head>
 <body>
-  <div id="map-holder">
+  <div id="map-container">
     <!-- O conteúdo do mapa SVG será incluído aqui -->
   </div>
 
   <script>
     
     async function loadMap() {
-
-      // Insere o arquivo SVG do mapa
-      const response = await fetch('/dist/mapa-es.svg');
-      const svgContent = await response.text();
       
-      const container = document.querySelector('#map-holder');
-      container.innerHTML = svgContent;
-
-      // Obtém o SVG do mapa recém-carregado na página e faz o init
-      const svgElement = container.querySelector('svg'); 
-      mapaSvg.init(svgElement);
+      // Carrega o mapa do Espírito Santo
+      await mapaSvg.load('ES', '#map-container');
 
       // Customiza todos os municípios
       mapaSvg.setAllLocalidades({
@@ -275,7 +259,7 @@ mapaSvg.tracados.forEach(t => {
 
 | Método                          | Descrição                                                                 | Parâmetros                                                                                                                                              | Retorno     |
 |----------------------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `init`                           | Inicializa o mapa SVG, configurando os elementos internos.                | `svgElement` (SVGSVGElement) - O elemento SVG que contém o mapa das localidades.                                                                      | `void`      |
+| `load`                           | Carrega dinamicamente o mapa SVG baseado na sigla da localidade fornecida.| `siglaMapa` (string) - A sigla que determina qual mapa SVG será carregado ("ES" para o mapa do Espírito Santo). <br> `containerSelector` (string) - O seletor CSS do container HTML onde o mapa será inserido (normalmente uma div).                 | `void`      |
 | `setLocalidade`                  | Configura os estilos de uma localidade, incluindo cores e negrito.        | `id` (string) - O código IBGE da localidade. <br> `options` (Object) - Opções de estilo (corFundo, corBorda, corNome, negrito, cssTracado, cssNome).      | `void`      |
 | `setAllLocalidades`              | Configura os estilos de todas as localidades no mapa.                     | `options` (Object) - Opções de estilo para todas as localidades (corFundo, corBorda, corNome, negrito, cssTracado, cssNome).                            | `void`      |
 | `setLocalidadeHover`             | Configura efeitos de hover para uma localidade específica.                | `id` (string) - O código IBGE da localidade. <br> `options` (Object) - Opções de estilo para o hover (corFundo, corBorda, corNome, negrito, cssTracado, cssNome). | `void`      |
