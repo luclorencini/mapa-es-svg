@@ -101,21 +101,7 @@ function customizarCachoeiro() {
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    // Esta é a melhor forma de inserir um SVG na página de forma a poder manipulá-lo.
-    // Buscamos o arquivo SVG via fetch e o inserimos em uma div.
-    // Ao fazer isso, as tags internas do svg passam a fazer parte do DOM,
-    //  o que nos permite manipulá-los com css e javascript.
-
-    const response = await fetch('../dist/mapa-es.svg');
-    const svgContent = await response.text();
-
-    const container = document.querySelector('#map-holder');
-    container.innerHTML = svgContent;
-
-    const svgElement = container.querySelector('svg');
-
-    //inicializa o mapaSvg para facilitar o uso do mapa
-    mapaSvg.init(svgElement);
+    await mapaSvg.load('ES', '#map-container');
 
     // Configura eventos de hover dos traçados dos municípios
     mapaSvg.setAllLocalidadesHover({
@@ -124,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     //lógica de arrastar (pan and zoom)
-    PanAndZoomControls.init(container, svgElement);
+    PanAndZoomControls.init('#map-container');
 
     //Click: mostra um alerta contendo o nome e o código IBGE do município
     mapaSvg.tracados.forEach(t => {
@@ -153,10 +139,10 @@ const PanAndZoomControls = {
     zoomInButton: null,
     zoomOutButton: null,
 
-    init(container, svg) {
+    init(containerSelector){
 
-        this.container = container;
-        this.svg = svg;
+        this.container = document.querySelector(containerSelector);
+        this.svg = this.container.querySelector('svg');
 
         this.resetButton = document.querySelector('#resetButton');
         this.zoomInButton = document.querySelector('#zoomInButton');

@@ -37,14 +37,76 @@ const mapaSvg = {
     svgElement: null,
 
     /**
-     * Inicializa o manipulador do mapa SVG, configurando seus elementos internos.
-     * @param {SVGSVGElement} svgElement - O elemento SVG que contém o mapa das localidades.
+     * Carrega dinamicamente o mapa SVG baseado na sigla da localidade fornecida.
+     * 
+     * @param {string} siglaLocalidade - A sigla que determina qual mapa SVG será carregado.
+     *    - "ES" para o mapa de Espírito Santo (outros valores resultam em erro).
+     * @param {string} containerSelector - O seletor CSS do container HTML onde o mapa será inserido (normalmente uma div).
+     *    - Exemplo: "#map-container" para selecionar uma div com o ID "map-container".
+     * 
+     * @throws {Error} Se a siglaLocalidade não for válida ou se houver problemas ao carregar o SVG.
+     *    - Lança um erro se a sigla não for reconhecida.
+     *    - Lança um erro se o arquivo SVG não for encontrado ou ocorrer falha no carregamento.
+     * 
+     * @example
+     * // Carrega o mapa do Espírito Santo na div com o ID 'map-container'
+     * load('ES', '#map-container');
      */
-    init(svgElement) {
+    async load(siglaLocalidade, containerSelector) {
 
+        // Função interna para obter a URL do SVG com base na siglaLocalidade
+        const getSvgUrl = () => {
+            let mapaFileName = '';
+
+            // Verificar qual mapa deve ser carregado com base na siglaLocalidade
+            if (siglaLocalidade === 'ES') {
+                mapaFileName = 'mapa-es.svg';        
+            } else {
+                throw new Error(`Sigla de localidade inválida: ${siglaLocalidade}`);
+            }
+
+            // Procurar pelo script que contém 'mapaSvg.js' no seu src
+            const scripts = document.scripts;
+            let currentScript = null;
+
+            // Percorrer os scripts para encontrar o correto
+            for (let script of scripts) {
+                if (script.src.includes('mapaSvg.js')) {
+                    currentScript = script;
+                    break;
+                }
+            }
+
+            // Se não encontrar o script, lançar erro
+            if (!currentScript) {
+                throw new Error('Script mapaSvg.js não encontrado');
+            }
+
+            // Obter a URL completa do script
+            const scriptUrl = currentScript.src;
+
+            // Extrair o diretório onde o script está localizado
+            const scriptDir = scriptUrl.substring(0, scriptUrl.lastIndexOf('/'));
+
+            // Construir a URL para o arquivo SVG
+            return `${scriptDir}/${mapaFileName}`;
+        };
+
+        // Obter a URL calculada do SVG
+        const svgUrl = getSvgUrl();
+
+        // Busca o arquivo SVG via fetch
+        const response = await fetch(svgUrl);
+        const svgContent = await response.text();
+
+        // Insere o SVG no elemento do DOM pelo seletor informado
+        const container = document.querySelector(containerSelector);
+        container.innerHTML = svgContent;
+        
+        // Realiza a inicialização do mapaSvg
+        const svgElement = container.querySelector(`${containerSelector} svg`);
         if (!svgElement) {
-            console.error('mapaSvg - init: elemento SVG não informado');
-            return;
+            throw new Error('Elemento SVG não encontrado no DOM');
         }
 
         this.svgElement = svgElement;
@@ -59,7 +121,7 @@ const mapaSvg = {
         this.nomes.forEach(label => {
             label.style.pointerEvents = 'none';
         });
-    },
+    },        
 
     /**
      * Configura os estilos de uma localidade, incluindo cores de fundo, borda, nome e outros atributos.

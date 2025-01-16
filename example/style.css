@@ -28,7 +28,7 @@ body {
     justify-content: space-between;
     height: calc(100vh - 4rem);
 
-    .map-container {
+    .map-frame {
         height: calc(100vh - 65px);
         width: 100vw;
         text-align: center;
