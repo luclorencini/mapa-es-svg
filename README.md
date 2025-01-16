@@ -1,4 +1,4 @@
-# mapaSvg.js - Mapa Iterativo do Espírito Santo
+# mapaSvg.js - Mapa Iterativo do Espírito Santo - V1.1
 
 Crie um gráfico interativo e totalmente customizável do estado do Espírito Santo.
 
