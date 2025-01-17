@@ -61,8 +61,15 @@ function exibirApenasLinhares() {
     mapaSvg.showNome(codIbge);
 
     //customizando com css direto
-    mapaSvg.setTracadoCss(codIbge, 'destaque-linhares');
-    mapaSvg.setNomeCss(codIbge, 'nome-linhares');
+    mapaSvg.setLocalidade(codIbge, {
+        cssTracado: 'destaque-linhares',
+        cssNome: 'nome-linhares'
+    });
+
+    mapaSvg.setLocalidadeHover(codIbge, {
+        cssTracado: 'destaque-linhares-hover',
+        cssNome: 'nome-linhares-hover'
+    });
 }
 
 function customizarColatina() {

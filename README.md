@@ -1,4 +1,4 @@
-# mapaSvg.js - Mapa Iterativo do Espírito Santo - V1.1
+# mapaSvg.js - Mapa Iterativo do Espírito Santo - V 1.1.1
 
 Crie um gráfico interativo e totalmente customizável do estado do Espírito Santo.
 
@@ -287,6 +287,16 @@ mapaSvg.tracados.forEach(t => {
 | `getTracadoElem`                 | Obtém o traçado de uma localidade a partir do id.                         | `id` (string) - O código IBGE da localidade.                                                                                                            | `SVGPathElement \| null`|
 | `getNomeElem`                    | Obtém o nome de uma localidade a partir do id.                             | `id` (string) - O código IBGE da localidade.                                                                                                            | `SVGTextElement \| SVGGElement \| null`|
 
+#### Opções de estilo
+
+| Nome         | Descrição                                                         |
+|--------------|-------------------------------------------------------------------|
+| `corFundo`   | A cor de fundo a ser aplicada à localidade.                       |
+| `corBorda`   | A cor da borda a ser aplicada à localidade.                       |
+| `corNome`    | A cor do nome a ser aplicada à localidade.                        |
+| `negrito`    | Determina se o nome da localidade deve ser exibido em negrito.    |
+| `cssTracado` | Estilo CSS adicional a ser aplicado ao tracado.                   |
+| `cssNome`    | Estilo CSS adicional a ser aplicado ao nome da localidade.        |
 
 ## Sobre os arquivos
 

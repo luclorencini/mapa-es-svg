@@ -136,8 +136,8 @@ const mapaSvg = {
      * @param {string} options.corBorda - A cor da borda a ser aplicada à localidade.
      * @param {string} options.corNome - A cor do nome a ser aplicada à localidade.
      * @param {boolean} options.negrito - Determina se o nome da localidade deve ser exibido em negrito.
-     * @param {string} options.cssTracado - Estilos CSS adicionais a serem aplicados ao tracado (ainda não implementado).
-     * @param {string} options.cssNome - Estilos CSS adicionais a serem aplicados ao nome da localidade (ainda não implementado).
+     * @param {string} options.cssTracado - Estilo CSS adicional a ser aplicado ao tracado.
+     * @param {string} options.cssNome - Estilo CSS adicional a ser aplicado ao nome da localidade.
      */
     setLocalidade(id, { corFundo, corBorda, corNome, negrito, cssTracado, cssNome }) {
         if (!id) return;
@@ -147,8 +147,8 @@ const mapaSvg = {
         if (corBorda) this.setCorBorda(id, corBorda);
         if (corNome) this.setCorNome(id, corNome);
         if (negrito) this.setNegrito(id, negrito);
-        //if (cssTracado) this.setTracadoCss(id, cssTracado);
-        //if (cssNome) this.setNomeCss(id, cssNome);
+        if (cssTracado) this.setTracadoCss(id, cssTracado);
+        if (cssNome) this.setNomeCss(id, cssNome);
 
         return;
     },
@@ -159,9 +159,9 @@ const mapaSvg = {
      * @param {string} options.corFundo - A cor de fundo a ser aplicada aos elementos de localidade.
      * @param {string} options.corBorda - A cor da borda a ser aplicada aos elementos de localidade.
      * @param {string} options.corNome - A cor do nome a ser aplicada aos elementos de localidade.
-     * @param {boolean} options.negrito - Determina se o texto dos nomes das localidades deve ser exibido em negrito (ainda não implementado).
-     * @param {string} options.cssTracado - Estilos CSS adicionais a serem aplicados aos tracados (ainda não implementado).
-     * @param {string} options.cssNome - Estilos CSS adicionais a serem aplicados aos nomes das localidades (ainda não implementado).
+     * @param {boolean} options.negrito - Determina se o texto dos nomes das localidades deve ser exibido em negrito.
+     * @param {string} options.cssTracado - Estilo CSS adicional a ser aplicado aos tracados.
+     * @param {string} options.cssNome - Estilo CSS adicional a ser aplicado aos nomes das localidades.
      */
     setAllLocalidades({ corFundo, corBorda, corNome, negrito, cssTracado, cssNome }) {
         if (!corFundo && !corBorda && !corNome && !negrito && !cssTracado && !cssNome) return;
@@ -179,9 +179,9 @@ const mapaSvg = {
      * @param {string} options.corFundo - A cor de fundo a ser aplicada quando o mouse passar sobre o elemento.
      * @param {string} options.corBorda - A cor da borda a ser aplicada quando o mouse passar sobre o elemento.
      * @param {string} options.corNome - A cor do nome a ser aplicada quando o mouse passar sobre o elemento.
-     * @param {boolean} options.negrito - Determina se o texto do nome deve ser exibido em negrito (ainda não implementado).
-     * @param {string} options.cssTracado - Estilos CSS adicionais a serem aplicados ao tracado (ainda não implementado).
-     * @param {string} options.cssNome - Estilos CSS adicionais a serem aplicados ao nome (ainda não implementado).
+     * @param {boolean} options.negrito - Determina se o texto do nome deve ser exibido em negrito.
+     * @param {string} options.cssTracado - Estilo CSS adicional a ser aplicado ao tracado quando o mouse passar sobre o elemento.
+     * @param {string} options.cssNome - Estilo CSS adicional a ser aplicado ao nome da localidade quando o mouse passar sobre o elemento.
      */
     setLocalidadeHover(id, { corFundo, corBorda, corNome, negrito, cssTracado, cssNome }) {
         if (!id) return;
@@ -226,7 +226,21 @@ const mapaSvg = {
                     tog, negrito
                 );
             }
-            //TODO - o que fazer com cssTracado e cssNome?
+            if (cssTracado) {
+                const originalClass = t.getAttribute("class");
+                t.setAttribute("class", cssTracado);
+                t.setAttribute("data-original-class", originalClass);
+            }
+            if (cssNome) {
+                this._executeInTog(
+                    (elText, cssClass) => {
+                        const originalClass = elText.getAttribute("class");
+                        elText.setAttribute("class", cssClass);
+                        elText.setAttribute("data-original-class", originalClass);
+                    },
+                    tog, cssNome
+                );
+            }
         };
 
         const handleMouseOut = () => {
@@ -257,7 +271,19 @@ const mapaSvg = {
                     tog
                 );
             }
-            //TODO - o que fazer com cssTracado e cssNome?
+            if (cssTracado) {
+                const originalClass = t.getAttribute("data-original-class");
+                t.setAttribute("class", originalClass);
+            }
+            if (cssNome) {
+                this._executeInTog(
+                    (elText) => {
+                        const originalClass = elText.getAttribute("data-original-class");
+                        elText.setAttribute("class", originalClass);
+                    },
+                    tog
+                );
+            }
         };
 
         // Verifica se o elemento já possui listeners registrados
@@ -285,9 +311,9 @@ const mapaSvg = {
      * @param {string} options.corFundo - A cor de fundo a ser aplicada quando o mouse passar sobre os elementos.
      * @param {string} options.corBorda - A cor da borda a ser aplicada quando o mouse passar sobre os elementos.
      * @param {string} options.corNome - A cor do nome a ser aplicada quando o mouse passar sobre os elementos.
-     * @param {boolean} options.negrito - Determina se o texto dos nomes deve ser exibido em negrito (ainda não implementado).
-     * @param {string} options.cssTracado - Estilos CSS adicionais a serem aplicados ao tracado (ainda não implementado).
-     * @param {string} options.cssNome - Estilos CSS adicionais a serem aplicados ao nome (ainda não implementado). 
+     * @param {boolean} options.negrito - Determina se o texto dos nomes deve ser exibido em negrito.
+     * @param {string} options.cssTracado - Estilo CSS adicional a ser aplicado aos tracados.
+     * @param {string} options.cssNome - Estilo CSS adicional a ser aplicado aos nomes das localidades.
      */
     setAllLocalidadesHover({ corFundo, corBorda, corNome, negrito, cssTracado, cssNome }) {
         if (!corFundo && !corBorda && !corNome && !negrito && !cssTracado && !cssNome) return;

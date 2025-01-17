@@ -158,6 +158,14 @@ body {
 .destaque-linhares {
     fill: pink;
     stroke: darkorchid;
+    stroke-width: 2px;
+    stroke-linecap: square;
+    stroke-linejoin: bevel;
+    stroke-opacity: 0.25;
+}
+
+.destaque-linhares-hover {
+    fill: deeppink;
     stroke-width: 5px;
     stroke-linecap: square;
     stroke-linejoin: bevel;
@@ -171,7 +179,19 @@ body {
     letter-spacing: 1px;
     text-decoration: underline;
     text-transform: uppercase;
-    fill: orchid;
-    stroke: white !important;
     stroke-width: 0.25px;
+    stroke: white !important;
+    fill: orchid;
+}
+
+.nome-linhares-hover {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-decoration: underline;
+    text-transform: uppercase;
+    stroke-width: 0.25px;
+    stroke: black !important;
+    fill: yellow;
 }
